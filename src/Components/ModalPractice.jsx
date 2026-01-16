@@ -30,6 +30,8 @@ const ModalPractice = ({isOpen , onClose}) => {
     ref={modalRef}
   className='absolute shadow shadow-gray-200 w-100 h-auto max-h-49 overflow-y-auto overflow-x-hidden custom-scrollbar bg-white mt-1.5 rounded-2xl py-4 px-5'
 
+
+  
   >
 
     <div className='flex flex-wrap gap-5  '>
