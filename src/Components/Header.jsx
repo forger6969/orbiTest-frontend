@@ -51,7 +51,7 @@ const Header = () => {
 
                         <div className="flex gap-5 items-center ">
                             <button className=''>
-                                <Link to="/Regist" >
+                                <Link to="/Register" >
                                     <RotatingText
                                         texts={['Sign In', 'Login', 'Register', 'Authenticate!']}
                                         mainClassName="h-[45px] w-[140px] flex items-center justify-center 
