@@ -4,14 +4,8 @@ import { Link } from 'react-router-dom'
 import logo from "../assets/logo.svg"
 
 const Registed = () => {
-
     const [email, setEmail] = useState("")
-
     const [password, setPassword] = useState("")
-
-
-
-
     return (
         <>
 
@@ -105,7 +99,7 @@ const Registed = () => {
 
 
                         <p className='text-red-500 font-medium mt-2 text-md'>
-                            <Link>
+                            <Link to='/SingUp'>
                             You don't have an account
                             </Link>
                         </p>

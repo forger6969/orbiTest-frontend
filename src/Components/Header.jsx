@@ -14,15 +14,9 @@ const Header = () => {
 
     return (
         <>
-
-
             <header className='py-4  shadow-gray-200 shadow-md'>
-
                 <div className="max-w-full mx-auto w-[85%]">
-
                     <nav className='flex items-center justify-between'>
-
-
                         <Link to="/">
                             <img className='w-38.25' src={logo} alt="" />
                         </Link>
@@ -73,7 +67,7 @@ const Header = () => {
                             </button>
 
                             <button className=''>
-                                <Link to="/" >
+                                <Link to="/SingUp" >
                                     <RotatingText
                                         texts={['Sign Up', 'Register', 'Login', 'Authenticate!']}
                                         mainClassName=" 
