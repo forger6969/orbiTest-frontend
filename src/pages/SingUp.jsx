@@ -23,10 +23,20 @@ const SignUp = () => {
                 <div className='w-full h-full relative'>
                     <Link
                         to="/"
-                        className="w-43 justify-center rounded-lg h-12.5 flex items-center gap-2 text-black text-[16px] fixed top-3 left-4 group cursor-pointer bg-transparent transition-all hover:bg-[#ef4343e6] hover:text-white z-0"
+                        className="
+                                 w-43 justify-center rounded-lg h-12.5
+                                 flex items-center gap-2 text-black text-[16px] 
+                                 fixed top-3 left-4
+                                 group cursor-pointer 
+                                 bg-transparent
+                                 transition-all 
+                                 hover:bg-[#ef4343e6]
+                                 hover:text-white
+                                 z-0
+                            "
                     >
                         <svg
-                            className='w-3.5 h-auto pt-1 transition-transform duration-300 group-hover:-translate-x-1.5 fill-current'
+                            className="w-3.5 h-auto pt-1 transition-transform duration-300 group-hover:-translate-x-1.5 fill-current"
                             width="800px"
                             height="800px"
                             viewBox="0 0 1024 1024"
