@@ -11,7 +11,6 @@ const Mainone = () => {
 
       <div>
         <h1>
-          Experience the real atmosphere of an
 
         </h1>
       </div>

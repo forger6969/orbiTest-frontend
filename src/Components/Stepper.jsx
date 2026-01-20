@@ -115,7 +115,7 @@ export default function Stepper({
               )}
               <button
                 onClick={isLastStep ? handleComplete : handleNext}
-                className="duration-350 flex items-center justify-center rounded-lg bg-red-500 py-2 px-4.5 font-medium tracking-tight  text-white hover:text-red-500 transition hover:bg-transparent hover:border "
+                className="duration-350 flex items-center justify-center rounded-lg bg-red-500 py-2 px-4.5 font-medium tracking-tight text-white hover:text-red-500 transition hover:bg-transparent hover:border"
                 {...nextButtonProps}
               >
                 {isLastStep ? 'Next' : nextButtonText}
@@ -207,8 +207,8 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
     >
       <motion.div
         variants={{
-          inactive: { scale: 1, backgroundColor: '#ff5454', color: '#FFF' },
-          active: { scale: 1, backgroundColor: '#ff5454', color: '#FFF' },
+          inactive: { scale: 1, backgroundColor: '#d1d5db', color: '#6b7280' },
+          active: { scale: 1.1, backgroundColor: '#ff5454', color: '#FFF' },
           complete: { scale: 1, backgroundColor: '#ff5454', color: '#FFF' }
         }}
         transition={{ duration: 0.3 }}
@@ -217,7 +217,7 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
         {status === 'complete' ? (
           <CheckIcon className="h-4 w-4 text-white" />
         ) : status === 'active' ? (
-          <div className="h-3 w-3 rounded-full bg-[#ff5454]" />
+          <div className="h-3 w-3 rounded-full bg-white" />
         ) : (
           <span className="text-sm">{step}</span>
         )}
@@ -228,12 +228,12 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
 
 function StepConnector({ isComplete }) {
   const lineVariants = {
-    incomplete: { width: 0, backgroundColor: 'transparent' },
+    incomplete: { width: '100%', backgroundColor: '#d1d5db' },
     complete: { width: '100%', backgroundColor: '#ff5454' }
   };
 
   return (
-    <div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-red-500">
+    <div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-gray-300">
       <motion.div
         className="absolute left-0 top-0 h-full"
         variants={lineVariants}

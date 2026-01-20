@@ -20,12 +20,12 @@ const Home = () => {
     }}
   >
     <DotGrid
-      dotSize={1.6}
+      dotSize={1.5}
       gap={15}
-      baseColor="#c2c0c2"
+      baseColor="#d9d7d9"
       activeColor="#3300ff"
       proximity={120}
-      shockRadius={450}
+      shockRadius={100}
       shockStrength={15}
       resistance={950}
       returnDuration={1.5}
