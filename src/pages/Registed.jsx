@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import back from "../assets/back.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import axios from "axios";
+import Notify from "../Components/Notify";
+import { showToast } from "../helper/ShowToast";
 
 const Registed = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const loginRequest = async () => {
     try {
@@ -17,12 +20,15 @@ const Registed = () => {
           password,
         },
       );
-      const token = await req.data.token
-      localStorage.setItem("token" , token)
-      
+      const token = await req.data.token;
+      localStorage.setItem("token", token);
+      showToast("Success login" , "success")
+      navigate("/Dashboard");
+
       console.log(req.data);
     } catch (err) {
-      console.log(err);
+    
+      showToast(err.response.data.message, "error");
     }
   };
 
@@ -100,7 +106,7 @@ const Registed = () => {
 
                   <button
                     type="button"
-                    onClick={loginRequest}
+                    onClick={ async ()=> await loginRequest()}
                     className="text-white bg-[#ef4343] rounded-lg py-2"
                   >
                     Continue
