@@ -50,7 +50,19 @@ const Registed = () => {
       <div className="w-full h-full relative">
         <Link
           to="/"
-          className="w-43 justify-center rounded-lg h-12.5 flex items-center gap-2 text-black text-[16px] fixed top-3 left-4 group cursor-pointer bg-transparent transition-all hover:bg-[#ef4343e6] hover:text-white z-0"
+          className="flex items-center gap-2.5 text-gray-700 text-base font-medium
+          fixed top-6 left-6
+          group cursor-pointer 
+          bg-white shadow-lg
+          px-6 py-3.5
+          rounded-xl
+          transition-all duration-300
+          hover:bg-red-500
+          hover:text-white
+          hover:shadow-xl
+          hover:scale-105
+          active:scale-95
+          z-50"
         >
           <svg
             className="w-3.5 h-auto pt-1 transition-transform duration-300 group-hover:-translate-x-1.5 fill-current"

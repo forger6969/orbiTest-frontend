@@ -6,7 +6,6 @@ export default function Stepper({
   initialStep = 1,
   onStepChange = () => {},
   onFinalStepCompleted = () => {},
-  stepCircleContainerClassName = '',
   stepContainerClassName = '',
   contentClassName = '',
   footerClassName = '',
@@ -16,6 +15,8 @@ export default function Stepper({
   nextButtonText = 'Continue',
   disableStepIndicators = false,
   renderStepIndicator,
+  canProceed = true,
+  isLoading = false,
   ...rest
 }) {
   const [currentStep, setCurrentStep] = useState(initialStep);
@@ -39,90 +40,120 @@ export default function Stepper({
   };
 
   const handleNext = () => {
-    if (!isLastStep) {
+    if (!isLastStep && canProceed) {
       setDirection(1);
       updateStep(currentStep + 1);
     }
   };
 
   const handleComplete = () => {
-    setDirection(1);
-    updateStep(totalSteps + 1);
+    if (canProceed) {
+      setDirection(1);
+      updateStep(totalSteps + 1);
+    }
   };
 
   return (
-    <div
-      className="flex min-h-full flex-1 flex-col items-center justify-center p-4 sm:aspect-[4/3] md:aspect-[2/1]"
-      {...rest}
-    >
-      <div
-        className={`mx-auto w-full max-w-md rounded-4xl shadow-xl bg-white ${stepCircleContainerClassName}`}
-      >
-        <div className={`${stepContainerClassName} flex w-full items-center p-8`}>
-          {stepsArray.map((_, index) => {
-            const stepNumber = index + 1;
-            const isNotLastStep = index < totalSteps - 1;
-            return (
-              <React.Fragment key={stepNumber}>
-                {renderStepIndicator ? (
-                  renderStepIndicator({
-                    step: stepNumber,
-                    currentStep,
-                    onStepClick: clicked => {
-                      setDirection(clicked > currentStep ? 1 : -1);
-                      updateStep(clicked);
-                    }
-                  })
-                ) : (
-                  <StepIndicator
-                    step={stepNumber}
-                    disableStepIndicators={disableStepIndicators}
-                    currentStep={currentStep}
-                    onClickStep={clicked => {
-                      setDirection(clicked > currentStep ? 1 : -1);
-                      updateStep(clicked);
-                    }}
-                  />
-                )}
-                {isNotLastStep && <StepConnector isComplete={currentStep > stepNumber} />}
-              </React.Fragment>
-            );
-          })}
-        </div>
-        <StepContentWrapper
-          isCompleted={isCompleted}
-          currentStep={currentStep}
-          direction={direction}
-          className={`space-y-2 px-8 ${contentClassName}`}
-        >
-          {stepsArray[currentStep - 1]}
-        </StepContentWrapper>
-        {!isCompleted && (
-          <div className={`px-8 pb-8 ${footerClassName}`}>
-            <div className={`mt-10 flex items-center ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
-              {currentStep !== 1 && (
-                <button
-                  onClick={handleBack}
-                  className={`duration-350 rounded px-2 py-1 transition ${
-                    currentStep === 1
-                      ? 'pointer-events-none opacity-50 text-neutral-400'
-                      : 'text-neutral-400 hover:text-red-500 font-medium'
-                  }`}
-                  {...backButtonProps}
-                >
-                  {backButtonText}
-                </button>
-              )}
-              <button
-                onClick={isLastStep ? handleComplete : handleNext}
-                className="duration-350 flex items-center justify-center rounded-lg bg-red-500 py-2 px-4.5 font-medium tracking-tight text-white hover:text-red-500 transition hover:bg-transparent hover:border"
-                {...nextButtonProps}
-              >
-                {isLastStep ? 'Next' : nextButtonText}
-              </button>
-            </div>
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-[#e5e7eb5c]" {...rest}>
+      {/* Верхняя часть - индикаторы шагов */}
+      <div className="w-full max-w-2xl mb-8">
+        <div className={`bg-white rounded-2xl shadow-lg p-6 ${stepContainerClassName}`}>
+          <div className="flex w-full items-center justify-center">
+            {stepsArray.map((_, index) => {
+              const stepNumber = index + 1;
+              const isNotLastStep = index < totalSteps - 1;
+              return (
+                <React.Fragment key={stepNumber}>
+                  {renderStepIndicator ? (
+                    renderStepIndicator({
+                      step: stepNumber,
+                      currentStep,
+                      onStepClick: clicked => {
+                        if (clicked > currentStep && !canProceed) return;
+                        if (clicked < currentStep || clicked === currentStep) {
+                          setDirection(clicked > currentStep ? 1 : -1);
+                          updateStep(clicked);
+                        }
+                      }
+                    })
+                  ) : (
+                    <StepIndicator
+                      step={stepNumber}
+                      disableStepIndicators={disableStepIndicators}
+                      currentStep={currentStep}
+                      canProceed={canProceed}
+                      onClickStep={clicked => {
+                        if (clicked > currentStep && !canProceed) return;
+                        if (clicked < currentStep || clicked === currentStep) {
+                          setDirection(clicked > currentStep ? 1 : -1);
+                          updateStep(clicked);
+                        }
+                      }}
+                    />
+                  )}
+                  {isNotLastStep && <StepConnector isComplete={currentStep > stepNumber} />}
+                </React.Fragment>
+              );
+            })}
           </div>
-        )}
+        </div>
+      </div>
+
+      {/* Нижняя часть - контент с формами */}
+      <div className="w-full max-w-2xl">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden relative">
+          {/* Loader overlay */}
+          {isLoading && (
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
+                <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+              </div>
+            </div>
+          )}
+
+          <StepContentWrapper
+            isCompleted={isCompleted}
+            currentStep={currentStep}
+            direction={direction}
+            className={`p-8 ${contentClassName}`}
+          >
+            {stepsArray[currentStep - 1]}
+          </StepContentWrapper>
+
+          {!isCompleted && (
+            <div className={`px-8 pb-8 border-t border-gray-100 pt-6 ${footerClassName}`}>
+              <div className={`flex items-center ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
+                {currentStep !== 1 && (
+                  <button
+                    onClick={handleBack}
+                    disabled={isLoading}
+                    className={`rounded-lg px-6 py-2.5 font-medium transition-all duration-300 ${
+                      isLoading
+                        ? 'opacity-50 cursor-not-allowed text-gray-400'
+                        : 'text-gray-600 hover:text-red-500 hover:bg-red-50'
+                    }`}
+                    {...backButtonProps}
+                  >
+                    {backButtonText}
+                  </button>
+                )}
+                <button
+                  onClick={isLastStep ? handleComplete : handleNext}
+                  disabled={!canProceed || isLoading}
+                  className={`rounded-lg py-2.5 px-8 font-medium tracking-tight transition-all duration-300 ${
+                    canProceed && !isLoading
+                      ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                  {...nextButtonProps}
+                >
+                  {isLastStep ? 'Complete' : nextButtonText}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -174,7 +205,7 @@ function SlideTransition({ children, direction, onHeightReady }) {
 
 const stepVariants = {
   enter: dir => ({
-    x: dir >= 0 ? '-100%' : '100%',
+    x: dir >= 0 ? '100%' : '-100%',
     opacity: 0
   }),
   center: {
@@ -182,40 +213,41 @@ const stepVariants = {
     opacity: 1
   },
   exit: dir => ({
-    x: dir >= 0 ? '50%' : '-50%',
+    x: dir >= 0 ? '-100%' : '100%',
     opacity: 0
   })
 };
 
 export function Step({ children }) {
-  return <div className="px-8">{children}</div>;
+  return <div>{children}</div>;
 }
 
-function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }) {
+function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators, canProceed }) {
   const status = currentStep === step ? 'active' : currentStep < step ? 'inactive' : 'complete';
+  const isClickable = step < currentStep || (step === currentStep && !disableStepIndicators);
 
   const handleClick = () => {
-    if (step !== currentStep && !disableStepIndicators) onClickStep(step);
+    if (isClickable) onClickStep(step);
   };
 
   return (
     <motion.div
       onClick={handleClick}
-      className="relative cursor-pointer outline-none focus:outline-none"
+      className={`relative outline-none focus:outline-none ${isClickable ? 'cursor-pointer' : 'cursor-not-allowed'}`}
       animate={status}
       initial={false}
     >
       <motion.div
         variants={{
           inactive: { scale: 1, backgroundColor: '#d1d5db', color: '#6b7280' },
-          active: { scale: 1.1, backgroundColor: '#ff5454', color: '#FFF' },
-          complete: { scale: 1, backgroundColor: '#ff5454', color: '#FFF' }
+          active: { scale: 1.15, backgroundColor: '#ef4444', color: '#FFF' },
+          complete: { scale: 1, backgroundColor: '#ef4444', color: '#FFF' }
         }}
         transition={{ duration: 0.3 }}
-        className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
+        className="flex h-10 w-10 items-center justify-center rounded-full font-semibold shadow-md"
       >
         {status === 'complete' ? (
-          <CheckIcon className="h-4 w-4 text-white" />
+          <CheckIcon className="h-5 w-5 text-white" />
         ) : status === 'active' ? (
           <div className="h-3 w-3 rounded-full bg-white" />
         ) : (
@@ -229,11 +261,11 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators }
 function StepConnector({ isComplete }) {
   const lineVariants = {
     incomplete: { width: '100%', backgroundColor: '#d1d5db' },
-    complete: { width: '100%', backgroundColor: '#ff5454' }
+    complete: { width: '100%', backgroundColor: '#ef4444' }
   };
 
   return (
-    <div className="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-gray-300">
+    <div className="relative mx-3 h-0.5 flex-1 overflow-hidden rounded bg-gray-300">
       <motion.div
         className="absolute left-0 top-0 h-full"
         variants={lineVariants}

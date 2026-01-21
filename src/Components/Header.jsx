@@ -47,7 +47,7 @@ const Header = () => {
                             <button className=''>
                                 <Link to="/Register" >
                                     <RotatingText
-                                        texts={['Sign In', 'Login', 'Register', 'Authenticate!']}
+                                        texts={['Sign In', 'Login', 'Authenticate!']}
                                         mainClassName="h-[45px] w-[140px] flex items-center justify-center 
                                             border-2 border-red-600 text-red-600 bg-transparent 
                                             rounded-lg 
@@ -69,7 +69,7 @@ const Header = () => {
                             <button className=''>
                                 <Link to="/SingUp" >
                                     <RotatingText
-                                        texts={['Sign Up', 'Register', 'Login', 'Authenticate!']}
+                                        texts={['Sign Up', 'Register', 'Authenticate!']}
                                         mainClassName=" 
                                             h-[45px] w-[140px] flex items-center justify-center 
                                             rounded-lg
