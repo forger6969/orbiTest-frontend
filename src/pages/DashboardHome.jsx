@@ -202,7 +202,7 @@ const DashboardHome = ({ userData }) => {
         <div className="min-h-screen  p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             {/* Header Section */}
-            <div className="bg-gray-50 rounded-lg shadow-xl p-6 md:p-8 mb-6">
+            <div className="bg-gray-50 rounded-lg shadow-lg p-6 md:p-8 mb-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <img
                   src={userData.avatar}
@@ -236,7 +236,7 @@ const DashboardHome = ({ userData }) => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <div className="bg-qizil1 from-qizil1 to-qizil2 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-qizil1 from-qizil1 to-qizil2 rounded-lg shadow-lg p-6 text-white">
                 <div className="flex items-center relative justify-between">
                   <div>
                     <p className="text-blue-100 text-sm font-medium">
@@ -262,7 +262,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-6 text-qizil2 border-2 border-qizil1">
+              <div className="bg-white rounded-lg shadow-lg p-6 text-qizil2 border-2 border-qizil1">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-qizil2 text-sm font-medium">
@@ -288,7 +288,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-qizil1 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-qizil1 rounded-lg shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-purple-100 text-sm font-medium">
@@ -316,7 +316,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-qizil2 text-red-500">
+              <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-qizil2 text-red-500">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-red-500 text-sm font-medium">
