@@ -346,7 +346,7 @@ const DashboardHome = ({ userData }) => {
             </div>
 
             {/* Chart Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Performance Over Time
               </h2>
@@ -356,7 +356,7 @@ const DashboardHome = ({ userData }) => {
             </div>
 
             {/* Test History */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Test History
               </h2>
@@ -381,7 +381,7 @@ const DashboardHome = ({ userData }) => {
                     return (
                       <div
                         key={test._id}
-                        className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
+                        className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
                       >
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                           <div className="flex-1">
@@ -452,13 +452,13 @@ const DashboardHome = ({ userData }) => {
             </div>
 
             <div className="flex items-center gap-4 pt-[30px]">
-              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
             </div>
 
-            <div className="skeleton w-full mt-5 h-[400px] rounded-2xl"></div>
+            <div className="skeleton w-full mt-5 h-[400px] rounded-lg"></div>
           </div>
           </div>
       )}
