@@ -42,21 +42,21 @@ const DashboardHome = ({ userData }) => {
             {
               label: "Score",
               data: scores,
-              borderColor: "rgb(59, 130, 246)",
-              backgroundColor: "rgba(59, 130, 246, 0.1)",
+              borderColor: "#ef4444",
+              backgroundColor: "rgba(253, 97, 54, 0.2)",
               tension: 0.4,
               fill: true,
               yAxisID: "y",
             },
-            {
-              label: "Success Rate (%)",
-              data: successRates,
-              borderColor: "rgb(16, 185, 129)",
-              backgroundColor: "rgba(16, 185, 129, 0.1)",
-              tension: 0.4,
-              fill: true,
-              yAxisID: "y1",
-            },
+            // {
+            //   label: "Success Rate (%)",
+            //   data: successRates,
+            //   borderColor: "rgba(27, 16, 185, 0.349)",
+            //   backgroundColor: "rgba(16, 185, 129, 0.1)",
+            //   tension: 0.4,
+            //   fill: true,
+            //   yAxisID: "y1",
+            // },
           ],
         },
         options: {
@@ -199,15 +199,15 @@ const DashboardHome = ({ userData }) => {
   return (
     <>
       {userData ? (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
+        <div className="min-h-screen  p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             {/* Header Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+            <div className="bg-gray-50 rounded-lg shadow-xl p-6 md:p-8 mb-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <img
                   src={userData.avatar}
                   alt="Avatar"
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-blue-500 shadow-lg"
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-qizil1 shadow-lg"
                 />
                 <div className="flex-1 text-center md:text-left">
                   <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
@@ -236,15 +236,15 @@ const DashboardHome = ({ userData }) => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
-                <div className="flex items-center justify-between">
+              <div className="bg-qizil1 from-qizil1 to-qizil2 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center relative justify-between">
                   <div>
                     <p className="text-blue-100 text-sm font-medium">
                       Total Tests
                     </p>
                     <p className="text-4xl font-bold mt-2">{totalTests}</p>
                   </div>
-                  <div className="bg-blue-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-red-400 bg-opacity-30 rounded-full p-4 -right-4">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -262,15 +262,15 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-white rounded-xl shadow-lg p-6 text-qizil2 border-2 border-qizil1">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-green-100 text-sm font-medium">
+                    <p className="text-qizil2 text-sm font-medium">
                       Average Score
                     </p>
                     <p className="text-4xl font-bold mt-2">{averageScore}</p>
                   </div>
-                  <div className="bg-green-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-red-100 bg-opacity-30 rounded-full p-4 -right-4">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -288,7 +288,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-qizil1 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-purple-100 text-sm font-medium">
@@ -298,7 +298,7 @@ const DashboardHome = ({ userData }) => {
                       {averageSuccessRate}%
                     </p>
                   </div>
-                  <div className="bg-purple-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-red-400 bg-opacity-30 rounded-full p-4 right-3.5">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -316,17 +316,17 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-qizil2 text-red-500">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-orange-100 text-sm font-medium">
+                    <p className="text-red-500 text-sm font-medium">
                       Correct Answers
                     </p>
                     <p className="text-4xl font-bold mt-2">
                       {correctAnswers}/{totalQuestions}
                     </p>
                   </div>
-                  <div className="bg-orange-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-red-100 bg-opacity-30 rounded-full p-4">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -390,13 +390,13 @@ const DashboardHome = ({ userData }) => {
                             </h3>
                             <p className="text-sm text-gray-500 mb-3">{date}</p>
                             <div className="flex flex-wrap gap-3">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-qizil1">
                                 Score: {test.score}
                               </span>
                               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                                 Success: {test.successRate.toFixed(2)}%
                               </span>
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border-1 border-qizil1 bg-white text-qizil2">
                                 Correct: {correctCount}/{totalCount}
                               </span>
                             </div>
@@ -419,7 +419,7 @@ const DashboardHome = ({ userData }) => {
                                   style={{
                                     width: `${(correctCount / totalCount) * 100}%`,
                                   }}
-                                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-green-400 to-green-600"
+                                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-qizil1 to-red-300"
                                 ></div>
                               </div>
                             </div>
