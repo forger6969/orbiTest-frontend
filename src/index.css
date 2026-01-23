@@ -21,4 +21,5 @@ input:focus + label {
 }
 input:focus {
   outline-color: #0077b6;
+  color: rgba(27, 16, 185, 0.349);
 }
