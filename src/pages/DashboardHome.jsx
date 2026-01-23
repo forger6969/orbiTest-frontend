@@ -433,25 +433,34 @@ const DashboardHome = ({ userData }) => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col mx-auto justify-center">
-          <div className="flex w-fit flex-col gap-4">
-            <div className="flex items-center gap-4">
-              <div className="skeleton h-32 w-32 shrink-0 rounded-full"></div>
-              <div className="flex flex-col gap-4">
-                <div className="skeleton h-4 w-34"></div>
-                <div className="skeleton h-4 w-20"></div>
+        <div className="w-full h-auto  flex justify-center "> 
+          <div className="flex flex-col mx-auto max-w-full min-h-screen">
+            <div className="flex w-fit flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <div className="skeleton h-32 w-32 shrink-0 rounded-full"></div>
+                <div className="flex flex-col gap-4">
+                  <div className="skeleton h-4 w-34"></div>
+                  <div className="skeleton h-4 w-20"></div>
 
-                <div className="flex items-center gap-4">
-                  <div className="skeleton h-8 w-[100px] rounded-full"></div>
-                  <div className="skeleton h-8 w-[170px] rounded-full"></div>
-                  <div className="skeleton h-8 w-[200px] rounded-full"></div>
+                  <div className="flex items-center gap-4">
+                    <div className="skeleton h-8 w-[100px] rounded-full"></div>
+                    <div className="skeleton h-8 w-[170px] rounded-full"></div>
+                    <div className="skeleton h-8 w-[200px] rounded-full"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="skeleton h-[115px] w-[300px]"></div>
-        </div>
+            <div className="flex items-center gap-4 pt-[30px]">
+              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
+              <div className="skeleton h-[115px] w-[300px] rounded-2xl"></div>
+            </div>
+
+            <div className="skeleton w-full mt-5 h-[400px] rounded-2xl"></div>
+          </div>
+          </div>
       )}
     </>
   );

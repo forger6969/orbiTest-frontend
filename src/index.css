@@ -1,19 +1,24 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@theme {
+  --color-qizil1: #ef4444;
+  --color-qizil2: #dc2626;
+}
+
+
+/* custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
 }
 .custom-scrollbar {
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 input:focus + label {
   transform: translateY(-20px);
   color: #0077b6;
 }
-
 input:focus {
   outline-color: #0077b6;
 }
