@@ -161,7 +161,7 @@ const SingUp = () => {
       >
         {/* Шаг 1: Имя пользователя */}
         <Step>
-          <div className="space-y-6 px-[30px]">
+          <div className="space-y-6 pt-8 px-[30px]">
             <div className="text-center">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
                 Создайте аккаунт
