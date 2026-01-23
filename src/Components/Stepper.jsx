@@ -107,7 +107,7 @@ export default function Stepper({
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
               <div className="relative">
                 <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
-                <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                <div className="w-16 h-16 border-4 border-qizil1 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
               </div>
             </div>
           )}
@@ -131,7 +131,7 @@ export default function Stepper({
                     className={`rounded-lg px-6 py-2.5 font-medium transition-all duration-300 ${
                       isLoading
                         ? 'opacity-50 cursor-not-allowed text-gray-400'
-                        : 'text-gray-600 hover:text-red-500 hover:bg-red-50'
+                        : 'text-gray-600 hover:text-qizil1 hover:bg-red-50'
                     }`}
                     {...backButtonProps}
                   >
@@ -143,7 +143,7 @@ export default function Stepper({
                   disabled={!canProceed || isLoading}
                   className={`rounded-lg py-2.5 px-8 font-medium tracking-tight transition-all duration-300 ${
                     canProceed && !isLoading
-                      ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
+                      ? 'bg-qizil1 text-white hover:bg-qizil2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                   {...nextButtonProps}

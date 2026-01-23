@@ -2,7 +2,6 @@ import React from 'react'
 import Header from '../Components/Header'
 import { Link } from 'react-router-dom'
 import DotGrid from '../Components/DotGrid';
-import Mainone from '../Components/Mainone';
 
 const Home = () => {
 
@@ -35,7 +34,6 @@ const Home = () => {
   <div style={{ position: 'relative',backgroundColor: 'white', zIndex: 1 }}>
     <Header />
   </div>
-      <Mainone/>
 </div>
 
   )

@@ -108,7 +108,7 @@ const Dashboard = () => {
                                                     ${
                                                       isActive
                                                         ? `
-                                                        bg-red-500
+                                                        bg-qizil1
                                                         text-white
                                                         shadow-xl
                                                         scale-105
@@ -117,7 +117,6 @@ const Dashboard = () => {
                                                         bg-transparent
                                                         text-gray-700
                                                         shadow-none
-                                                        active:bg-red-500
                                                         active:text-white
                                                         active:shadow-xl
                                                         active:scale-105
@@ -141,7 +140,7 @@ const Dashboard = () => {
                                                     ${
                                                       isActive
                                                         ? `
-                                                        bg-red-500
+                                                        bg-qizil1
                                                         text-white
                                                         shadow-xl
                                                         scale-105

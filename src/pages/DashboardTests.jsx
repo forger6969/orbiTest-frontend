@@ -27,7 +27,7 @@ const DashboardTests = () => {
 
     <div>
 
-      {tests && <TestsAccordion title={"asd"} tests={tests}/>}
+      {tests && <TestsAccordion title={"Barcha testlar"} tests={tests}/>}
      
     </div>
   );

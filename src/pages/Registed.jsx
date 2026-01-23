@@ -11,7 +11,7 @@ const Registed = () => {
 
   const navigate = useNavigate();
 
-  // ✅ Валидация
+  //  Валидация
   const isEmailValid = email.endsWith("@gmail.com");
   const isPasswordValid = password.length >= 6;
   const isFormValid = isEmailValid && isPasswordValid && !loading;
@@ -53,11 +53,10 @@ const Registed = () => {
           className="flex items-center gap-2.5 text-gray-700 text-base font-medium
           fixed top-6 left-6
           group cursor-pointer 
-          bg-white shadow-lg
           px-6 py-3.5
-          rounded-xl
+          rounded-md
           transition-all duration-300
-          hover:bg-red-500
+          hover:bg-qizil1
           hover:text-white
           hover:shadow-xl
           hover:scale-105
