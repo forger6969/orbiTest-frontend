@@ -167,13 +167,13 @@ const Dashboard = () => {
             </nav>
 
             {/* Account Section */}
-            <div className="px-6 absolute bottom-4 pb-0">
+            <div className="px-2 absolute bottom-2 pb-0">
               <button
                 onClick={() => setShowAccountModal(true)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-200 transition-colors"
+                className="w-75 flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 transition-colors"
               >
-                <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                  {userData?.username[0]}
+                <div className="w-12 h-12 bg-qizil1 rounded-full flex items-center justify-center  text-white font-bold text-lg shadow-md">
+                  {userData?.username[0]} 
                 </div>
                 <div className="flex-1 text-left">
                   <p className="font-semibold text-gray-800">{userData?.username}</p>
