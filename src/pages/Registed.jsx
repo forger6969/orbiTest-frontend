@@ -99,7 +99,7 @@ const Registed = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={`
-                  h-10 rounded-lg pl-3 border-2 outline-none
+                  h-10 rounded-lg pl-3 border-2 outline-none text-black
                   ${
                     email && !isEmailValid
                       ? "border-red-500 text-red-500"

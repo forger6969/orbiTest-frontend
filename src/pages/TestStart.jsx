@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TestExamRunner from "../Components/TestRun";
 
 const TestStart = () => {
@@ -24,11 +24,16 @@ const TestStart = () => {
     getTestById();
   }, []);
 
-  return<div>
+  const navigate = useNavigate();
 
-    {test && <TestExamRunner test={test} />}
-    
-    </div>;
+  return <div>
+    {test && (
+      <TestExamRunner
+        test={test}
+        onGoBack={() => navigate(-1)}
+      />
+    )}
+  </div>
 };
 
 export default TestStart;
