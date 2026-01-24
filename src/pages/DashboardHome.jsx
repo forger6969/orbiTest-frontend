@@ -202,7 +202,7 @@ const DashboardHome = ({ userData }) => {
         <div className="min-h-screen  p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             {/* Header Section */}
-            <div className="bg-gray-50 rounded-lg shadow-lg p-6 md:p-8 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <img
                   src={userData.avatar}

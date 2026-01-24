@@ -1,18 +1,28 @@
 import React, { useState } from "react";
-import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon } from "lucide-react";
+import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon, Link } from "lucide-react";
 import axios from "axios";
+import { data, useNavigate } from "react-router-dom";
 
 /**
  * TestExamRunner
  * Props:
  *  test – объект Test из backend (mongoose schema)
- */
+*/
 export default function TestExamRunner({ test }) {
+  const [loading, setLoading] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(test.testTime); // milliseconds
   const [isRunning, setIsRunning] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
-  // Timer effect
+
+  const mess = JSON.parse(localStorage.getItem("mssage"));
+
+
+
+
+
   React.useEffect(() => {
     if (!isRunning || timeLeft <= 0) return;
 
@@ -30,7 +40,6 @@ export default function TestExamRunner({ test }) {
     return () => clearInterval(timer);
   }, [isRunning, timeLeft]);
 
-  // Format time as MM:SS
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -73,11 +82,31 @@ export default function TestExamRunner({ test }) {
 
       const data = await req.data
       console.log(data);
-      
+
+      localStorage.setItem("mssage", JSON.stringify(req.data));
+
+
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleFinishClick = async () => {
+    setLoading(true);
+    await endTest();
+    setLoading(false);
+    setOpenModal(true);
+
+  };
+
+  const Modalandnavi = async () => {
+    setOpenModal(false)
+    navigate(-1, {
+      state: { showModal: true },
+    });
+
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -211,11 +240,10 @@ export default function TestExamRunner({ test }) {
                         .map(([key, value]) => (
                           <label
                             key={key}
-                            className={`flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-all ${
-                              selectedAnswer === key
-                                ? "border-red-500 bg-red-50"
-                                : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                            }`}
+                            className={`flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-all ${selectedAnswer === key
+                              ? "border-red-500 bg-red-50"
+                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                              }`}
                           >
                             <input
                               type="radio"
@@ -233,7 +261,7 @@ export default function TestExamRunner({ test }) {
               })}
             </div>
 
-            {/* Bottom Progress Section */}
+            {/*  Progress  */}
             <div className="p-6 bg-gray-50 border-t sticky bottom-0">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-gray-600">
@@ -245,7 +273,7 @@ export default function TestExamRunner({ test }) {
         </div>
       </div>
 
-      {/* Bottom Navigation Bar */}
+      {/*  Navigation  */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2 py-3">
@@ -269,25 +297,53 @@ export default function TestExamRunner({ test }) {
                       });
                     }
                   }}
-                  className={`w-10 h-10 rounded font-semibold transition-all ${
-                    isAnswered
-                      ? "bg-green-100 text-green-700 border border-green-300"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
+                  className={`w-10 h-10 rounded font-semibold transition-all ${isAnswered
+                    ? "bg-green-100 text-green-700 border border-green-300"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
                 >
                   {index + 1}
                 </button>
               );
             })}
             <button
+
               className="ml-4 text-green-600 hover:text-green-700"
-              onClick={endTest}
+              onClick={handleFinishClick}
             >
-              Завершить
+
+              {loading ? "Yuborilmoqda..." : "Завершить"}
             </button>
+
           </div>
         </div>
       </div>
+      {openModal && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-sm p-6">
+            <h2 className="text-lg font-semibold text-center text-red-400">
+              Test muvaffaqiyatli yakunlandi
+            </h2>
+
+            <p>
+            {mess.result.successRate}
+
+            </p>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={Modalandnavi}
+                className="btn bg-red-400 hover:bg-red-500 text-white"
+              >
+                Yopish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
     </div>
+
   );
 }
