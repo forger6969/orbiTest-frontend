@@ -9,6 +9,7 @@ import PrivateRoute from "./Components/PrivateRoute";
 import PublicRoute from "./Components/PublicRoute";
 import { AppContext } from "./context/AppContext";
 import TestStart from "./pages/TestStart";
+import TestResults from "./pages/TestResults";
 
 const App = () => {
 
@@ -62,6 +63,13 @@ const App = () => {
         element={
           <PrivateRoute>
             <TestStart/>
+          </PrivateRoute>
+        }
+        />
+        <Route path="/test-results"
+        element={
+          <PrivateRoute>
+            <TestResults/>
           </PrivateRoute>
         }
         />

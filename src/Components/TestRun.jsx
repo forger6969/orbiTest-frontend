@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon, Link } from "lucide-react";
+import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon } from "lucide-react";
 import axios from "axios";
-import { data, useNavigate } from "react-router-dom";
+import { data, useNavigate , Link } from "react-router-dom";
 
 /**
  * TestExamRunner
@@ -101,32 +101,35 @@ export default function TestExamRunner({ test }) {
 
   const Modalandnavi = async () => {
     setOpenModal(false)
-    navigate(-1, {
-      state: { showModal: true },
+    navigate('/test-results', {
+      state: { 
+        results: mess,
+        test: test,
+        answers: answers
+      },
     });
-
   }
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       {/* Header */}
-      <div className="bg-white border-b shadow-sm">
+      <div className="bg-white/90 backdrop-blur-sm border-b shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-                <ChevronLeft size={20} />
-                <span>Back</span>
+              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+                <Link to={'/dashboard/tests'} className="font-medium">Back</Link>
               </button>
-              <span className="px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded uppercase">
+              <span className="px-3 py-1 bg-gradient-to-r from-qizil1 to-qizil2 text-white text-sm font-bold rounded-full uppercase shadow-md">
                 {test.testType}
               </span>
-              <span className="text-gray-500">ID: {test._id || "16736"}</span>
+              <span className="text-gray-500 font-mono text-sm">ID: {test._id || "16736"}</span>
             </div>
             <div className="flex items-center gap-4">
               <div
-                className={`flex items-center gap-2 ${timeLeft < 60000 ? "text-red-600 font-bold" : "text-gray-600"}`}
+                className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeLeft < 60000 ? "bg-qizil1/20 text-qizil2 font-bold animate-pulse" : "bg-gray-100 text-gray-700"
+                  }`}
               >
                 <Clock size={18} />
                 <span className="font-semibold">{formatTime(timeLeft)}</span>
@@ -138,9 +141,9 @@ export default function TestExamRunner({ test }) {
 
       {/* Part Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="bg-gray-100 border border-gray-300 rounded-lg p-4">
-          <h2 className="font-bold text-gray-800">Part 1</h2>
-          <p className="text-gray-600 text-sm">
+        <div className="bg-gradient-to-r from-white to-blue-50 border border-blue-200 rounded-xl p-6 shadow-lg">
+          <h2 className="font-bold text-xl text-gray-800 mb-2">Part 1</h2>
+          <p className="text-gray-600">
             Read the text and answer questions 1-{test.questions.length}.
           </p>
         </div>
@@ -150,14 +153,16 @@ export default function TestExamRunner({ test }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pb-20">
         <div className="flex gap-6">
           {/* LEFT SIDE - Reading Text (Blurred/Locked) */}
-          <div className="flex-1 bg-white rounded-lg shadow-sm border relative overflow-hidden min-h-[600px]">
+          <div className="flex-1 bg-white rounded-xl shadow-lg border border-gray-200 relative overflow-hidden min-h-[600px]">
             {/* Blur Overlay */}
-            <div className="absolute inset-0 backdrop-blur-sm bg-white/80 z-10 flex flex-col items-center justify-center">
-              <Lock size={48} className="text-gray-400 mb-4" />
-              <p className="text-lg font-semibold text-gray-700 mb-2">
+            <div className="absolute inset-0 backdrop-blur-sm bg-white/85 z-10 flex flex-col items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                <Lock size={32} className="text-white" />
+              </div>
+              <p className="text-xl font-bold text-gray-800 mb-2">
                 Скоро будет доступно
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-gray-600">
                 Этот раздел ещё недоступен
               </p>
             </div>
@@ -194,19 +199,12 @@ export default function TestExamRunner({ test }) {
           </div>
 
           {/* RIGHT SIDE - All Questions */}
-          <div className="flex-1 bg-white rounded-lg shadow-sm border overflow-y-auto max-h-[800px]">
-            <div className="p-6 sticky top-0 bg-white border-b z-10">
+          <div className="flex-1 bg-white rounded-xl shadow-lg border border-gray-200 overflow-y-auto max-h-[800px]">
+            <div className="p-6 sticky top-0 bg-gradient-to-r from-white to-qizil2 border-b border-qizil2 z-10">
               <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Questions 1-{test.questions.length}
               </h3>
-              <p className="text-sm text-gray-600">
-                Choose <span className="font-semibold">TRUE</span> if the
-                statement agrees with the information given in the text, choose{" "}
-                <span className="font-semibold">FALSE</span> if the statement
-                contradicts the information, or choose{" "}
-                <span className="font-semibold">NOT GIVEN</span> if there is no
-                information on this.
-              </p>
+  
             </div>
 
             {/* All Questions List */}
@@ -217,42 +215,42 @@ export default function TestExamRunner({ test }) {
                 return (
                   <div
                     key={question._id}
-                    className="pb-8 border-b last:border-b-0"
+                    className="pb-8 border-b border-gray-200 last:border-b-0 hover:bg-gradient-to-r hover:from-qizil1/5 hover:to-qizil2/5 -mx-4 px-4 py-4 rounded-xl transition-all duration-200"
                   >
                     <div className="flex items-start gap-3 mb-4">
-                      <span className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded flex items-center justify-center font-bold text-gray-700">
+                      <span className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-qizil1 to-qizil2 rounded-lg flex items-center justify-center font-bold text-white shadow-md">
                         {index + 1}
                       </span>
                       <div className="flex-1">
-                        <p className="text-gray-800 leading-relaxed mb-1">
+                        <p className="text-gray-800 leading-relaxed mb-1 font-medium text-base">
                           {question.question}
                         </p>
                       </div>
-                      <button className="text-gray-400 hover:text-gray-600">
+                      <button className="text-gray-400 hover:text-qizil2 transition-colors p-2 rounded-lg hover:bg-qizil1/10">
                         <Bookmark size={18} />
                       </button>
                     </div>
 
                     {/* Answer Options */}
-                    <div className="ml-11 space-y-3">
+                    <div className="ml-12 space-y-3">
                       {Object.entries(question.variants)
                         .filter(([key, value]) => value) // Фильтруем пустые варианты
                         .map(([key, value]) => (
                           <label
                             key={key}
-                            className={`flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-all ${selectedAnswer === key
-                              ? "border-red-500 bg-red-50"
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                            className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${selectedAnswer === key
+                              ? "border-qizil2 bg-gradient-to-r from-qizil1/10 to-qizil2/10 shadow-md transform scale-105"
+                              : "border-gray-200 hover:border-qizil1 hover:bg-qizil1/5 hover:shadow-sm"
                               }`}
                           >
                             <input
                               type="radio"
                               name={`question-${question._id}`}
-                              className="w-4 h-4 text-red-500 border-gray-300 focus:ring-red-500"
+                              className="w-5 h-5 text-qizil2 border-gray-300 focus:ring-qizil2 focus:ring-2"
                               checked={selectedAnswer === key}
                               onChange={() => handleSelect(question._id, key)}
                             />
-                            <span className="text-gray-700">{value}</span>
+                            <span className="text-gray-700 font-medium">{value}</span>
                           </label>
                         ))}
                     </div>
@@ -262,10 +260,21 @@ export default function TestExamRunner({ test }) {
             </div>
 
             {/*  Progress  */}
-            <div className="p-6 bg-gray-50 border-t sticky bottom-0">
+            <div className="p-6 bg-gradient-to-r from-qizil1/5 to-qizil2/5 border-t border-qizil1/20 sticky bottom-0">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-600">
-                  Progress: {answers.length} / {test.questions.length} answered
+                <span className="text-sm font-medium text-gray-700">
+                  Progress: <span className="text-qizil2 font-bold">{answers.length}</span> / {test.questions.length} answered
+                </span>
+                <div className="flex-1 max-w-xs mx-4">
+                  <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div 
+                      className="bg-gradient-to-r from-qizil1 to-qizil2 h-full rounded-full transition-all duration-300"
+                      style={{ width: `${(answers.length / test.questions.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-gray-700">
+                  {Math.round((answers.length / test.questions.length) * 100)}%
                 </span>
               </div>
             </div>
@@ -274,10 +283,10 @@ export default function TestExamRunner({ test }) {
       </div>
 
       {/*  Navigation  */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-2xl z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-2 py-3">
-            <span className="text-sm text-gray-600">Part 1</span>
+          <div className="flex items-center justify-center gap-2 py-4">
+            <span className="text-sm font-semibold text-gray-600 px-3 py-1 bg-gray-100 rounded-full">Part 1</span>
             {test.questions.map((question, index) => {
               const isAnswered = answers.some(
                 (a) => a.questionId === question._id,
@@ -297,9 +306,9 @@ export default function TestExamRunner({ test }) {
                       });
                     }
                   }}
-                  className={`w-10 h-10 rounded font-semibold transition-all ${isAnswered
-                    ? "bg-green-100 text-green-700 border border-green-300"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  className={`w-10 h-10 rounded-lg font-bold transition-all duration-200 transform hover:scale-110 ${isAnswered
+                    ? "bg-gradient-to-br from-qizil1 to-qizil2 text-white border-2 border-qizil1/50 shadow-md"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-gray-200"
                     }`}
                 >
                   {index + 1}
@@ -307,36 +316,48 @@ export default function TestExamRunner({ test }) {
               );
             })}
             <button
-
-              className="ml-4 text-green-600 hover:text-green-700"
+              className="ml-6 bg-gradient-to-r from-qizil1 to-qizil2 hover:from-qizil2 hover:to-qizil1 text-white font-bold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               onClick={handleFinishClick}
             >
-
               {loading ? "Yuborilmoqda..." : "Завершить"}
             </button>
-
           </div>
         </div>
       </div>
       {openModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-sm p-6">
-            <h2 className="text-lg font-semibold text-center text-red-400">
-              Test muvaffaqiyatli yakunlandi
-            </h2>
-
-            <p>
-            {mess.result.successRate}
-
-            </p>
-
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={Modalandnavi}
-                className="btn bg-red-400 hover:bg-red-500 text-white"
-              >
-                Yopish
-              </button>
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 transform transition-all animate-in fade-in zoom-in duration-200">
+            {/* Success Icon */}
+            <div className="flex justify-center pt-8 pb-4">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            
+            <div className="px-8 pb-6">
+              <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
+                Test muvaffaqiyatli yakunlandi!
+              </h2>
+              
+              <div className="bg-gradient-to-r from-qizil1/5 to-qizil2/5 rounded-xl p-6 mb-6 border border-qizil1/20">
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-2">Sizning natijangiz:</p>
+                  <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-qizil1 to-qizil2">
+                    {mess?.result?.successRate || '0%'}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={Modalandnavi}
+                  className="flex-1 bg-gradient-to-r from-qizil1 to-qizil2 hover:from-qizil2 hover:to-qizil1 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  Посмотреть результаты
+                </button>
+              </div>
             </div>
           </div>
         </div>
