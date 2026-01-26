@@ -19,11 +19,11 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
-  const [ userData, setData ] = useState(null);
+  const [userData, setData] = useState(null);
   const navigate = useNavigate()
 
   const getMe = async () => {
-    
+
     try {
       const token = localStorage.getItem("token");
       const req = await axios.get(
@@ -42,7 +42,7 @@ const Dashboard = () => {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     getMe();
   }, []);
 
@@ -107,15 +107,14 @@ const Dashboard = () => {
                   isActive,
                 }) => `w-full flex items-center gap-4 px-5 py-4 rounded
                                                     transition-all duration-300 cursor-pointer
-                                                    ${
-                                                      isActive
-                                                        ? `
+                                                    ${isActive
+                    ? `
                                                         bg-qizil1
                                                         text-white
                                                         shadow-xl
                                                         scale-105
                                                         `
-                                                        : `
+                    : `
                                                         bg-transparent
                                                         text-gray-700
                                                         shadow-none
@@ -123,7 +122,7 @@ const Dashboard = () => {
                                                         active:shadow-xl
                                                         active:scale-105
                                                         `
-                                                    }
+                  }
                                                     active:scale-95
                                                     `}
                 to="/dashboard"
@@ -139,15 +138,14 @@ const Dashboard = () => {
                   isActive,
                 }) => `w-full flex items-center gap-4 px-5 py-4 rounded
                                                     transition-all duration-300 cursor-pointer
-                                                    ${
-                                                      isActive
-                                                        ? `
+                                                    ${isActive
+                    ? `
                                                         bg-qizil1
                                                         text-white
                                                         shadow-xl
                                                         scale-105
                                                         `
-                                                        : `
+                    : `
                                                         bg-transparent
                                                         text-gray-700
                                                         shadow-none
@@ -156,7 +154,7 @@ const Dashboard = () => {
                                                         active:shadow-xl
                                                         active:scale-105
                                                         `
-                                                    }
+                  }
                                                     active:scale-95
                                                     `}
                 to="/dashboard/tests"
@@ -175,12 +173,12 @@ const Dashboard = () => {
                 className="w-75 flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 transition-colors"
               >
                 <div className="w-12 h-12 bg-qizil1 rounded-full flex items-center justify-center  text-white font-bold text-lg shadow-md">
-                  {userData?.username[0]} 
+                  {userData?.username[0]}
                 </div>
                 <div className="flex-1 text-left">
                   <p className="font-semibold text-gray-800">{userData?.username}</p>
                   <p className="text-xs text-gray-500 truncate">
-                   {userData?.email}
+                    {userData?.email}
                   </p>
                 </div>
 
@@ -192,53 +190,55 @@ const Dashboard = () => {
 
       {/* Account Modal */}
       {showAccountModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-96 transform transition-all">
-            {/* Modal Header */}
-            <div className="bg-red-500 p-6 rounded-t-2xl">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-white">Account</h3>
-                <button
-                  onClick={() => setShowAccountModal(false)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                >
-                  <X className="text-white" size={20} />
-                </button>
+        <div
+          onClick={() => setShowAccountModal(false)}
+          className="fixed inset-0 z-50 "
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute bottom-22 left-3.5 w-72 bg-white
+                 rounded-2xl shadow-2xl
+                 animate-fadeUp "
+          >
+            {/* Header */}
+            <div className="flex items-center gap-4 p-5 rounded-t-2xl
+                      bg-gradient-to-br from-qizil1/90 to-qizil1 ">
+              <div className="w-14 h-14 rounded-full bg-white/15
+                        flex items-center justify-center
+                        text-white font-bold text-xl ring-2 ring-white/30">
+                A
+              </div>
+              <div>
+                <h4 className="font-semibold text-white">
+                  {userData?.username}
+                </h4>
+                <p className="text-xs text-white/80">
+                  {userData?.email}
+                </p>
               </div>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6">
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-                  A
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-800">{userData?.username}</h4>
-                  <p className="text-sm text-gray-500">
-                   {userData?.email}
-                  </p>
-                </div>
-              </div>
+            {/* Body */}
+            <div className="p-4 space-y-1">
+              <button className="menu-btn">
+                <User size={18} />
+                Edit Profile
+              </button>
 
-              <div className="space-y-2">
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 font-medium transition-colors">
-                  <User size={20} />
-                  <span>Edit Profile</span>
-                </button>
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 font-medium transition-colors">
-                  <Settings size={20} />
-                  <span>Settings</span>
-                </button>
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 font-medium text-red-500 transition-colors">
-                  <LogOut size={20} />
-                  <span>Log Out</span>
-                </button>
-              </div>
+              <button className="menu-btn">
+                <Settings size={18} />
+                Settings
+              </button>
+
+              <button className="menu-btn text-qizil1 hover:bg-qizil1/10">
+                <LogOut size={18} />
+                Log Out
+              </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };

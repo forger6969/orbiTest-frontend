@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon } from "lucide-react";
 import axios from "axios";
-import { data, useNavigate , Link } from "react-router-dom";
+import { data, useNavigate, Link } from "react-router-dom";
 
 /**
  * TestExamRunner
@@ -102,7 +102,7 @@ export default function TestExamRunner({ test }) {
   const Modalandnavi = async () => {
     setOpenModal(false)
     navigate('/test-results', {
-      state: { 
+      state: {
         results: mess,
         test: test,
         answers: answers
@@ -200,7 +200,7 @@ export default function TestExamRunner({ test }) {
               <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Questions 1-{test.questions.length}
               </h3>
-  
+
             </div>
 
             <div className="p-6 space-y-8">
@@ -262,7 +262,7 @@ export default function TestExamRunner({ test }) {
                 </span>
                 <div className="flex-1 max-w-xs mx-4">
                   <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
-                    <div 
+                    <div
                       className="bg-gradient-to-r from-qizil1 to-qizil2 h-full rounded-full transition-all duration-300"
                       style={{ width: `${(answers.length / test.questions.length) * 100}%` }}
                     />
@@ -330,21 +330,31 @@ export default function TestExamRunner({ test }) {
                 </svg>
               </div>
             </div>
-            
+
             <div className="px-8 pb-6">
               <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
                 Test muvaffaqiyatli yakunlandi!
               </h2>
-              
+
               <div className="bg-gradient-to-r from-qizil1/5 to-qizil2/5 rounded-xl p-6 mb-6 border border-qizil1/20">
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-2">Sizning natijangiz:</p>
                   <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-qizil1 to-qizil2">
-                    {mess?.result?.successRate || '0%'}
+
+                    {(() => {
+                      const value = Number(mess?.result?.successRate);
+
+                      if (value === 100) return "100%";
+
+                      return `${Math.floor(value).toString().slice(0, 2)}%`;
+                    })()}
+
+
+
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex gap-3">
                 <button
                   onClick={Modalandnavi}
