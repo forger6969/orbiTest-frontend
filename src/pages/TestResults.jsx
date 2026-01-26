@@ -92,6 +92,7 @@ export default function TestResults() {
                     return `${Math.floor(value).toString().slice(0, 2)}%`;
                   })()}
                 </p>
+                
 
               </div>
               <div className="text-center">
