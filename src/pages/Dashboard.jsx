@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import {
   Home,
   Book,
@@ -20,8 +20,10 @@ import axios from "axios";
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [ userData, setData ] = useState(null);
+  const navigate = useNavigate()
 
   const getMe = async () => {
+    
     try {
       const token = localStorage.getItem("token");
       const req = await axios.get(
@@ -73,7 +75,7 @@ const Dashboard = () => {
                 <path d="M14 10l2 2l-2 2"></path>
               </svg>
             </label>
-            <div className="px-4" onClick={() => window.history.back()}>
+            <div className="px-4" onClick={() => navigate('/dashboard')}>
               Back
             </div>
           </nav>

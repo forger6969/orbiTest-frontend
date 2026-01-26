@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import TestsAccordion from "../Components/TestAccordion";
+import TestsAccordion, { TestsAccordionSkeleton } from "../Components/TestAccordion";
 
 const DashboardTests = () => {
   const [tests, setTests] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const getAllTests = async () => {
     try {
+      setLoading(true);
       const req = await axios.get(
         import.meta.env.VITE_BACKEND_API + "/api/test/all",
       );
@@ -16,6 +18,8 @@ const DashboardTests = () => {
       setTests(data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -24,11 +28,12 @@ const DashboardTests = () => {
   }, []);
 
   return (
-
     <div>
-
-      {tests && <TestsAccordion title={"Barcha testlar"} tests={tests}/>}
-     
+      {loading ? (
+        <TestsAccordionSkeleton title={"Barcha testlar"} />
+      ) : (
+        tests && <TestsAccordion title={"Barcha testlar"} tests={tests} />
+      )}
     </div>
   );
 };
