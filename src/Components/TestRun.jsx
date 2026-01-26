@@ -111,7 +111,7 @@ export default function TestExamRunner({ test }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b shadow-sm">
+      <div className="bg-white border-b border-gray-300 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
@@ -150,7 +150,7 @@ export default function TestExamRunner({ test }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pb-20">
         <div className="flex gap-6">
           {/* LEFT SIDE - Reading Text (Blurred/Locked) */}
-          <div className="flex-1 bg-white rounded-lg shadow-sm border relative overflow-hidden min-h-[600px]">
+          <div className="flex-1 bg-white rounded-lg shadow-sm  border-2 border-gray-300 relative overflow-hidden min-h-[600px]">
             {/* Blur Overlay */}
             <div className="absolute inset-0 backdrop-blur-sm bg-white/80 z-10 flex flex-col items-center justify-center">
               <Lock size={48} className="text-gray-400 mb-4" />
@@ -194,8 +194,8 @@ export default function TestExamRunner({ test }) {
           </div>
 
           {/* RIGHT SIDE - All Questions */}
-          <div className="flex-1 bg-white rounded-lg shadow-sm border overflow-y-auto max-h-[800px]">
-            <div className="p-6 sticky top-0 bg-white border-b z-10">
+          <div className="flex-1 bg-white rounded-lg shadow-sm border-2 border-gray-300 overflow-y-auto max-h-[800px]">
+            <div className="p-6 sticky top-0 bg-white border-gray-300 border-b-2 z-10">
               <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Questions 1-{test.questions.length}
               </h3>
@@ -217,7 +217,7 @@ export default function TestExamRunner({ test }) {
                 return (
                   <div
                     key={question._id}
-                    className="pb-8 border-b last:border-b-0"
+                    className="pb-8 border-b border-gray-300 last:border-b-0"
                   >
                     <div className="flex items-start gap-3 mb-4">
                       <span className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded flex items-center justify-center font-bold text-gray-700">
@@ -229,7 +229,6 @@ export default function TestExamRunner({ test }) {
                         </p>
                       </div>
                       <button className="text-gray-400 hover:text-gray-600">
-                        <Bookmark size={18} />
                       </button>
                     </div>
 
@@ -240,9 +239,9 @@ export default function TestExamRunner({ test }) {
                         .map(([key, value]) => (
                           <label
                             key={key}
-                            className={`flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer transition-all ${selectedAnswer === key
+                            className={`flex items-center gap-3 p-3  border-gray-300 rounded-lg cursor-pointer transition-all ${selectedAnswer === key
                               ? "border-red-500 bg-red-50"
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                              : "border-gray-300 hover:border-gray-300 hover:bg-gray-50"
                               }`}
                           >
                             <input
@@ -262,7 +261,7 @@ export default function TestExamRunner({ test }) {
             </div>
 
             {/*  Progress  */}
-            <div className="p-6 bg-gray-50 border-t sticky bottom-0">
+            <div className="p-6 bg-gray-50 border-gray-300 border-t sticky bottom-0">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-gray-600">
                   Progress: {answers.length} / {test.questions.length} answered
@@ -274,7 +273,7 @@ export default function TestExamRunner({ test }) {
       </div>
 
       {/*  Navigation  */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-gray-300 border-t shadow-lg z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2 py-3">
             <span className="text-sm text-gray-600">Part 1</span>
@@ -299,7 +298,7 @@ export default function TestExamRunner({ test }) {
                   }}
                   className={`w-10 h-10 rounded font-semibold transition-all ${isAnswered
                     ? "bg-green-100 text-green-700 border border-green-300"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-300"
                     }`}
                 >
                   {index + 1}
