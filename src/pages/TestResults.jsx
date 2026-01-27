@@ -35,7 +35,7 @@ export default function TestResults() {
   }
 
   const handleGoBack = () => {
-    navigate('/tests');
+    navigate('/dashboard/tests');
   };
 
   const getAnswerStatus = (questionId, userAnswer) => {
