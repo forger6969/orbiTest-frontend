@@ -14,7 +14,9 @@ const PublicRoute = ({ children }) => {
   }, [dispatch])
 
   if (isLoading) {
-    return <div>Загрузка...</div>
+    return <div className='flex justify-center  my-[25%]'>
+<span className="loading bg-qizil2 loading-dots w-[40px] loading-lg"></span>
+    </div>
   }
 
   // Если пользователь авторизован — редирект на защищённую страницу, иначе рендерим детей

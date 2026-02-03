@@ -15,7 +15,9 @@ const PrivateRoute = ({ children }) => {
 
   if (isLoading) {
     // Можно заменить на спиннер или красивую загрузку
-    return <div>Загрузка...</div>
+    return <div className='flex justify-center  my-[25%]'>
+      <span className="loading bg-qizil2 loading-dots w-[40px] loading-lg"></span>
+    </div>
   }
 
   // Если пользователь аутентифицирован — рендерим детей, иначе — редирект

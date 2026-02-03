@@ -128,7 +128,7 @@ export default function Stepper({
                   <button
                     onClick={handleBack}
                     disabled={isLoading}
-                    className={`rounded-lg px-6 py-2.5 font-medium transition-all duration-300 ${
+                    className={`rounded-lg px-6 py-2.5 font-medium transition-all cursor-pointer duration-300 ${
                       isLoading
                         ? 'opacity-50 cursor-not-allowed text-gray-400'
                         : 'text-gray-600 hover:text-qizil1 hover:bg-red-50'

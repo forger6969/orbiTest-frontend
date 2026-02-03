@@ -128,7 +128,7 @@ const SingUp = () => {
       {/* Кнопка "Back to home" */}
       <button
         onClick={() => window.history.back()}
-        className="flex items-center gap-2.5 text-gray-700 text-base font-medium
+        className="flex items-center gap-2.5 text-gray-700 text-base font-medium cursor-pointer
         fixed top-6 left-6
         group cursor-pointer 
         px-6 py-3.5

@@ -10,13 +10,15 @@ import PublicRoute from "./Components/PublicRoute";
 import { AppContext } from "./context/AppContext";
 import TestStart from "./pages/TestStart";
 import TestResults from "./pages/TestResults";
+import Profil from "./pages/Profil";
+import DashboardHome from "./pages/DashboardHome";
 
 const App = () => {
 
-  const [userData , setData] = useState(null)
+  const [userData, setData] = useState(null)
 
   return (
-    <AppContext.Provider value={{userData , setData}}>
+    <AppContext.Provider value={{ userData, setData }}>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -60,20 +62,22 @@ const App = () => {
           }
         />
         <Route path="/test/:id"
-        element={
-          <PrivateRoute>
-            <TestStart/>
-          </PrivateRoute>
-        }
+          element={
+            <PrivateRoute>
+              <TestStart />
+            </PrivateRoute>
+          }
         />
         <Route path="/test-results"
-        element={
-          <PrivateRoute>
-            <TestResults/>
-          </PrivateRoute>
-        }
-        
+          element={
+            <PrivateRoute>
+              <TestResults />
+            </PrivateRoute>
+          }
+
         />
+
+
       </Routes>
     </AppContext.Provider>
   );

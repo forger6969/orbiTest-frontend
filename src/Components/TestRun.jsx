@@ -119,7 +119,7 @@ export default function TestExamRunner({ test }) {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
-                <Link to={'/dashboard/tests'} className="font-medium">Back</Link>
+                <Link to={'/dashboard/tests'} className="font-medium cursor-pointer">Back</Link>
               </button>
               <span className="px-3 py-1 bg-gradient-to-r from-qizil1 to-qizil2 text-white text-sm font-bold rounded-full uppercase shadow-md">
                 {test.testType}

@@ -47,7 +47,7 @@ const Registed = () => {
 
   return (
     <>
-      <div className="w-full h-full relative">
+      <div className="w-full h-full relative cursor-pointer">
         <Link
           to="/"
           className="flex items-center gap-2.5 text-gray-700 text-base font-medium

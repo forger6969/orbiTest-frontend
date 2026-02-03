@@ -16,6 +16,7 @@ import DashboardHome from "./DashboardHome";
 import DashboardTests from "./DashboardTests";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
+import Profil from "./Profil";
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -42,12 +43,17 @@ const Dashboard = () => {
     }
   };
 
+  let clearn = () => {
+    localStorage.clear()
+  }
+
   useEffect(() => {
     getMe();
   }, []);
 
   return (
     <div>
+
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
@@ -75,7 +81,7 @@ const Dashboard = () => {
                 <path d="M14 10l2 2l-2 2"></path>
               </svg>
             </label>
-            <div className="px-4" onClick={() => navigate('/dashboard')}>
+            <div className="px-4 cursor-pointer" onClick={() => navigate('/dashboard')}>
               Back
             </div>
           </nav>
@@ -85,6 +91,7 @@ const Dashboard = () => {
             <Routes>
               <Route index element={<DashboardHome userData={userData} />} />
               <Route path="tests" element={<DashboardTests />} />
+              <Route path="profil" element={<Profil />} />
             </Routes>
           </div>
         </div>
@@ -220,20 +227,29 @@ const Dashboard = () => {
 
             {/* Body */}
             <div className="p-4 space-y-1">
-              <button className="menu-btn">
-                <User size={18} />
-                Edit Profile
-              </button>
+
+              <Link to="/Dashboard/profil">
+                <button className="menu-btn">
+                  <User size={18} />
+
+                  Edit Profile
+                </button>
+              </Link>
+
 
               <button className="menu-btn">
                 <Settings size={18} />
                 Settings
               </button>
 
-              <button className="menu-btn text-qizil1 hover:bg-qizil1/10">
-                <LogOut size={18} />
-                Log Out
-              </button>
+
+              <Link to={"/"}>
+                <button onClick={clearn} className="menu-btn text-qizil1 hover:bg-qizil1/10">
+                  <LogOut size={18} />
+                  Log Out
+                </button>
+              </Link>
+
             </div>
           </div>
         </div>

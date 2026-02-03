@@ -211,7 +211,7 @@ const DashboardHome = ({ userData }) => {
                 />
                 <div className="flex-1 text-center md:text-left">
                   <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                    {userData.username}
+                    {userData.lastName} {userData.firstName}
                   </h1>
                   <p className="text-gray-600 mb-3">{userData.email}</p>
                   <div className="flex flex-wrap gap-2 justify-center md:justify-start">
