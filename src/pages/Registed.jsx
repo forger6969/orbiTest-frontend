@@ -32,10 +32,11 @@ const Registed = () => {
 
       const req = await axios.post(
         import.meta.env.VITE_BACKEND_API + "/api/auth/login",
-        { email, password },
+        { email, password }
       );
 
       localStorage.setItem("token", req.data.token);
+      localStorage.setItem("userId", req.data.user._id);
       showToast("Success login", "success");
       navigate("/Dashboard");
     } catch (err) {
@@ -52,7 +53,7 @@ const Registed = () => {
           to="/"
           className="flex items-center gap-2.5 text-gray-700 text-base font-medium
           fixed top-6 left-6
-          group cursor-pointer 
+          group cursor-pointer
           px-6 py-3.5
           rounded-md
           transition-all duration-300
@@ -99,7 +100,7 @@ const Registed = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={`
-                  h-10 rounded-lg pl-3 border-2 outline-none text-black
+                  h-10 rounded-lg pl-3 border-2 outline-none
                   ${
                     email && !isEmailValid
                       ? "border-red-500 text-red-500"

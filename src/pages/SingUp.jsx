@@ -6,6 +6,8 @@ import { showToast } from "../helper/ShowToast";
 
 const SingUp = () => {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
     password: "",
@@ -71,19 +73,23 @@ const SingUp = () => {
   const canProceed = useMemo(() => {
     switch (currentStep) {
       case 1:
-        return formData.username.trim().length > 0;
+        return formData.firstName.trim().length > 0;
       case 2:
-        return validateEmail(formData.email);
+        return formData.lastName.trim().length > 0;
       case 3:
-        return passwordStrength.isStrong;
+        return formData.username.trim().length > 0;
       case 4:
+        return validateEmail(formData.email);
+      case 5:
+        return passwordStrength.isStrong;
+      case 6:
         return formData.groupID !== "";
       default:
         return false;
     }
   }, [currentStep, formData, passwordStrength]);
 
-  const handleComplete = async () => {};
+  const handleComplete = async () => { };
 
   const handleFinalSubmit = async () => {
     try {
@@ -93,12 +99,12 @@ const SingUp = () => {
         import.meta.env.VITE_BACKEND_API + "/api/auth/register",
         formData,
       );
-      showToast("Успешная регистрация" , "success")
+      showToast("Успешная регистрация", "success");
 
       navigate("/Register");
     } catch (err) {
       console.log(err);
-      showToast("Ошибка регистрации попробуйте заново" , "error")
+      showToast("Ошибка регистрации попробуйте заново", "error");
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +162,7 @@ const SingUp = () => {
         backButtonText="Назад"
         nextButtonText="Далее"
       >
-        {/* Шаг 1: Имя пользователя */}
+        {/* Шаг 1: Имя */}
         <Step>
           <div className="space-y-6 pt-8 px-[30px]">
             <div className="text-center">
@@ -164,7 +170,115 @@ const SingUp = () => {
                 Создайте аккаунт
               </h2>
               <p className="text-gray-500 text-lg">
-                Начните с вашего имени пользователя
+                Начните с вашего имени
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <label
+                className="font-semibold text-gray-800 text-base"
+                htmlFor="firstName"
+              >
+                Имя
+              </label>
+              <input
+                placeholder="Введите ваше имя"
+                id="firstName"
+                value={formData.firstName}
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
+                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.firstName.trim().length > 0
+                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
+                type="text"
+                autoComplete="off"
+              />
+              {formData.firstName.trim().length === 0 ? (
+                <p className="text-sm text-gray-500 ml-1">
+                  Введите ваше имя
+                </p>
+              ) : (
+                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Отлично!
+                </p>
+              )}
+            </div>
+          </div>
+        </Step>
+
+        {/* Шаг 2: Фамилия */}
+        <Step>
+          <div className="space-y-6 pt-8 px-[30px]">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Ваша фамилия
+              </h2>
+              <p className="text-gray-500 text-lg">
+                Укажите вашу фамилию
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <label
+                className="font-semibold text-gray-800 text-base"
+                htmlFor="lastName"
+              >
+                Фамилия
+              </label>
+              <input
+                placeholder="Введите вашу фамилию"
+                id="lastName"
+                value={formData.lastName}
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
+                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.lastName.trim().length > 0
+                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
+                type="text"
+                autoComplete="off"
+              />
+              {formData.lastName.trim().length === 0 ? (
+                <p className="text-sm text-gray-500 ml-1">
+                  Введите вашу фамилию
+                </p>
+              ) : (
+                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Отлично!
+                </p>
+              )}
+            </div>
+          </div>
+        </Step>
+
+        {/* Шаг 3: Имя пользователя */}
+        <Step>
+          <div className="space-y-6 pt-8 px-[30px]">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Имя пользователя
+              </h2>
+              <p className="text-gray-500 text-lg">
+                Выберите уникальное имя пользователя
               </p>
             </div>
             <div className="flex flex-col gap-3">
@@ -179,11 +293,10 @@ const SingUp = () => {
                 id="username"
                 value={formData.username}
                 onChange={(e) => handleInputChange("username", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${
-                  formData.username.trim().length > 0
-                    ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                    : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                }`}
+                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.username.trim().length > 0
+                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
                 type="text"
                 autoComplete="off"
               />
@@ -211,7 +324,7 @@ const SingUp = () => {
           </div>
         </Step>
 
-        {/* Шаг 2: Email */}
+        {/* Шаг 4: Email */}
         <Step>
           <div className="space-y-6 px-[30px]">
             <div className="text-center">
@@ -234,11 +347,10 @@ const SingUp = () => {
                 id="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${
-                  validateEmail(formData.email)
-                    ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                    : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                }`}
+                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${validateEmail(formData.email)
+                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
                 type="email"
                 autoComplete="off"
               />
@@ -270,7 +382,7 @@ const SingUp = () => {
           </div>
         </Step>
 
-        {/* Шаг 3: Пароль */}
+        {/* Шаг 5: Пароль */}
         <Step>
           <div className="space-y-6 px-[30px]">
             <div className="text-center">
@@ -293,11 +405,10 @@ const SingUp = () => {
                 id="password"
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${
-                  passwordStrength.isStrong
-                    ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                    : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                }`}
+                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${passwordStrength.isStrong
+                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
                 type="password"
                 autoComplete="off"
               />
@@ -310,15 +421,14 @@ const SingUp = () => {
                       Надежность пароля:
                     </p>
                     <span
-                      className={`text-sm font-bold ${
-                        passwordStrength.score <= 2
-                          ? "text-qizil2"
-                          : passwordStrength.score === 3
-                            ? "text-yellow-500"
-                            : passwordStrength.score === 4
-                              ? "text-blue-500"
-                              : "text-green-500"
-                      }`}
+                      className={`text-sm font-bold ${passwordStrength.score <= 2
+                        ? "text-qizil2"
+                        : passwordStrength.score === 3
+                          ? "text-yellow-500"
+                          : passwordStrength.score === 4
+                            ? "text-blue-500"
+                            : "text-green-500"
+                        }`}
                     >
                       {passwordStrength.score <= 2
                         ? "Слабый"
@@ -333,17 +443,16 @@ const SingUp = () => {
                     {[1, 2, 3, 4, 5].map((level) => (
                       <div
                         key={level}
-                        className={`h-2.5 flex-1 rounded-full transition-all duration-300 ${
-                          passwordStrength.score >= level
-                            ? level <= 2
-                              ? "bg-qizil1"
-                              : level === 3
-                                ? "bg-yellow-400"
-                                : level === 4
-                                  ? "bg-blue-400"
-                                  : "bg-green-500"
-                            : "bg-gray-200"
-                        }`}
+                        className={`h-2.5 flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= level
+                          ? level <= 2
+                            ? "bg-qizil1"
+                            : level === 3
+                              ? "bg-yellow-400"
+                              : level === 4
+                                ? "bg-blue-400"
+                                : "bg-green-500"
+                          : "bg-gray-200"
+                          }`}
                       />
                     ))}
                   </div>
@@ -365,11 +474,10 @@ const SingUp = () => {
                 ].map(({ key, label }) => (
                   <div key={key} className="flex items-center gap-3">
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
-                        passwordStrength.checks[key]
-                          ? "bg-green-500 scale-110"
-                          : "bg-gray-300"
-                      }`}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${passwordStrength.checks[key]
+                        ? "bg-green-500 scale-110"
+                        : "bg-gray-300"
+                        }`}
                     >
                       {passwordStrength.checks[key] && (
                         <svg
@@ -386,11 +494,10 @@ const SingUp = () => {
                       )}
                     </div>
                     <span
-                      className={`text-sm transition-all duration-200 ${
-                        passwordStrength.checks[key]
-                          ? "text-green-700 font-semibold"
-                          : "text-gray-600"
-                      }`}
+                      className={`text-sm transition-all duration-200 ${passwordStrength.checks[key]
+                        ? "text-green-700 font-semibold"
+                        : "text-gray-600"
+                        }`}
                     >
                       {label}
                     </span>
@@ -418,7 +525,7 @@ const SingUp = () => {
           </div>
         </Step>
 
-        {/* Шаг 4: Выбор опции */}
+        {/* Шаг 6: Выбор группы */}
         <Step>
           <div className="space-y-6 px-[30px]">
             <div className="text-center">
@@ -435,11 +542,10 @@ const SingUp = () => {
                 Выберите группу
               </label>
               <select
-                className={`w-full h-14 px-5 rounded-xl border-2 text-base font-medium focus:outline-none transition-all duration-200 cursor-pointer ${
-                  formData.groupID !== ""
-                    ? "border-green-500 text-green-600 bg-green-50/30"
-                    : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                }`}
+                className={`w-full h-14 px-5 rounded-xl border-2 text-base font-medium focus:outline-none transition-all duration-200 cursor-pointer ${formData.groupID !== ""
+                  ? "border-green-500 text-green-600 bg-green-50/30"
+                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
+                  }`}
                 value={formData.groupID}
                 onChange={(e) => {
                   handleInputChange("groupID", e.target.value);
@@ -449,7 +555,7 @@ const SingUp = () => {
                 <option value="">Выберите...</option>
 
                 {groups?.groups.map((m) => (
-                  <option value={`${m._id}`}>{m.groupName}</option>
+                  <option key={m._id} value={`${m._id}`}>{m.groupName}</option>
                 ))}
               </select>
               {formData.groupID === "" ? (
@@ -474,7 +580,7 @@ const SingUp = () => {
           </div>
         </Step>
 
-        {/* Шаг 5: Подтверждение */}
+        {/* Шаг 7: Подтверждение */}
         <Step>
           <div className="space-y-8 px-[30px]">
             <div className="text-center">
@@ -516,6 +622,53 @@ const SingUp = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-500 mb-1">
+                    Имя
+                  </p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {formData.firstName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-gray-500 mb-1">
+                    Фамилия
+                  </p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {formData.lastName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-gray-500 mb-1">
                     Имя пользователя
                   </p>
                   <p className="text-lg font-bold text-gray-900">
@@ -523,7 +676,6 @@ const SingUp = () => {
                   </p>
                 </div>
               </div>
-
               <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
                   <svg
@@ -583,10 +735,10 @@ const SingUp = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Выбранная опция
+                    Выбранная группа
                   </p>
                   <p className="text-lg font-bold text-gray-900">
-                    {getOptionLabel(formData.groupID)}
+                    {groups?.groups.find(g => g._id === formData.groupID)?.groupName || getOptionLabel(formData.groupID)}
                   </p>
                 </div>
               </div>
@@ -601,8 +753,6 @@ const SingUp = () => {
           </div>
         </Step>
       </Stepper>
-    </div>
-  );
+    </div>);
 };
-
 export default SingUp;
