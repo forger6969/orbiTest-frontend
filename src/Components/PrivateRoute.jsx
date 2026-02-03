@@ -1,25 +1,25 @@
 // components/PrivateRoute.jsx
-import { useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { checkAuth } from '../store/slices/authSlice'
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { checkAuth } from "../store/slices/authSlice";
 
 const PrivateRoute = ({ children }) => {
-  const dispatch = useDispatch()
-  const { isAuth, isLoading } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+  const { isAuth, isLoading } = useSelector((state) => state.auth);
 
   // Проверяем токен при монтировании компонента
   useEffect(() => {
-    dispatch(checkAuth())
-  }, [dispatch])
+    dispatch(checkAuth());
+  }, [dispatch]);
 
   if (isLoading) {
     // Можно заменить на спиннер или красивую загрузку
-    return <div>Загрузка...</div>
+    return <div>Загрузка...</div>;
   }
 
   // Если пользователь аутентифицирован — рендерим детей, иначе — редирект
-  return isAuth ? children : <Navigate to="/" replace />
-}
+  return isAuth ? children : <Navigate to="/" replace />;
+};
 
-export default PrivateRoute
+export default PrivateRoute;
