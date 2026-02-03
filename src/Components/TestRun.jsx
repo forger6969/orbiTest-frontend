@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Clock, Lock, ChevronLeft, Bookmark, AwardIcon } from "lucide-react";
 import axios from "axios";
 import { data, useNavigate, Link } from "react-router-dom";
+import { useTestSocket } from "../hooks/useTestSocket";
 
 /**
  * TestExamRunner
  * Props:
  *  test – объект Test из backend (mongoose schema)
-*/
+ */
 export default function TestExamRunner({ test }) {
   const [loading, setLoading] = useState(false);
   const [answers, setAnswers] = useState([]);
@@ -16,12 +17,27 @@ export default function TestExamRunner({ test }) {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
-
   const mess = JSON.parse(localStorage.getItem("mssage"));
 
+  // Получаем userId и подключаем socket
+  const userId = localStorage.getItem("userId");
+  const { startTest, finishTest } = useTestSocket(userId);
 
+  // При монтировании компонента - уведомляем что студент начал тест
+  React.useEffect(() => {
+    if (test && userId) {
+      console.log("🎯 Student started test:", test.testTitle);
+      startTest(test._id, test.testTitle);
+    }
 
-
+    // При размонтировании - уведомляем что студент вышел
+    return () => {
+      if (test && userId) {
+        console.log("👋 Student left test");
+        finishTest(test._id, 0, 0);
+      }
+    };
+  }, [test?._id, userId]);
 
   React.useEffect(() => {
     if (!isRunning || timeLeft <= 0) return;
@@ -31,6 +47,7 @@ export default function TestExamRunner({ test }) {
         if (prev <= 1000) {
           setIsRunning(false);
           alert("Время истекло!");
+          handleAutoSubmit(); // Автоматически отправляем при истечении времени
           return 0;
         }
         return prev - 1000;
@@ -52,7 +69,7 @@ export default function TestExamRunner({ test }) {
       const exists = prev.find((a) => a.questionId === questionId);
       if (exists) {
         return prev.map((a) =>
-          a.questionId === questionId ? { ...a, answer } : a,
+          a.questionId === questionId ? { ...a, answer } : a
         );
       }
       return [...prev, { questionId, answer }];
@@ -66,7 +83,7 @@ export default function TestExamRunner({ test }) {
   const endTest = async () => {
     try {
       console.log(answers);
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       const req = await axios.post(
         import.meta.env.VITE_BACKEND_API + "/api/test/result",
         {
@@ -77,39 +94,71 @@ export default function TestExamRunner({ test }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
-      const data = await req.data
+      const data = await req.data;
       console.log(data);
 
       localStorage.setItem("mssage", JSON.stringify(req.data));
 
+      // ВАЖНО: Уведомляем менторов о завершении теста
+      if (userId && data.result) {
+        console.log("✅ Notifying mentors - test finished");
+        finishTest(test._id, data.result.score, data.result.successRate);
+      }
 
+      return data;
     } catch (err) {
       console.log(err);
+      throw err;
+    }
+  };
+
+  const handleAutoSubmit = async () => {
+    // Автоматическая отправка при истечении времени
+    if (!loading) {
+      await handleFinishClick();
     }
   };
 
   const handleFinishClick = async () => {
     setLoading(true);
-    await endTest();
-    setLoading(false);
-    setOpenModal(true);
-
+    try {
+      await endTest();
+      setOpenModal(true);
+    } catch (error) {
+      console.error("Error finishing test:", error);
+      alert("Ошибка при отправке результатов");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const Modalandnavi = async () => {
-    setOpenModal(false)
-    navigate('/test-results', {
+    setOpenModal(false);
+    navigate("/test-results", {
       state: {
         results: mess,
         test: test,
-        answers: answers
+        answers: answers,
       },
     });
-  }
+  };
 
+  // Предупреждение при попытке выйти со страницы
+  React.useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (answers.length > 0 && !openModal) {
+        e.preventDefault();
+        e.returnValue =
+          "Вы уверены, что хотите покинуть тест? Прогресс будет потерян.";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [answers.length, openModal]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
@@ -118,18 +167,43 @@ export default function TestExamRunner({ test }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
-                <Link to={'/dashboard/tests'} className="font-medium">Back</Link>
+              <button
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                onClick={() => {
+                  if (
+                    window.confirm("Вы уверены, что хотите выйти из теста?")
+                  ) {
+                    // Уведомляем о выходе
+                    if (userId) {
+                      finishTest(test._id, 0, 0);
+                    }
+                    navigate("/dashboard/tests");
+                  }
+                }}
+              >
+                <ChevronLeft size={20} />
+                <span className="font-medium">Back</span>
               </button>
               <span className="px-3 py-1 bg-gradient-to-r from-qizil1 to-qizil2 text-white text-sm font-bold rounded-full uppercase shadow-md">
                 {test.testType}
               </span>
-              <span className="text-gray-500 font-mono text-sm">ID: {test._id || "16736"}</span>
+              <span className="text-gray-500 font-mono text-sm">
+                ID: {test._id?.slice(-6) || "16736"}
+              </span>
+
+              {/* Индикатор онлайн статуса */}
+              <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                В процессе
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div
-                className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeLeft < 60000 ? "bg-qizil1/20 text-qizil2 font-bold animate-pulse" : "bg-gray-100 text-gray-700"
-                  }`}
+                className={`flex items-center gap-2 px-3 py-1 rounded-full ${
+                  timeLeft < 60000
+                    ? "bg-qizil1/20 text-qizil2 font-bold animate-pulse"
+                    : "bg-gray-100 text-gray-700"
+                }`}
               >
                 <Clock size={18} />
                 <span className="font-semibold">{formatTime(timeLeft)}</span>
@@ -159,9 +233,7 @@ export default function TestExamRunner({ test }) {
               <p className="text-xl font-bold text-gray-800 mb-2">
                 Скоро будет доступно
               </p>
-              <p className="text-gray-600">
-                Этот раздел ещё недоступен
-              </p>
+              <p className="text-gray-600">Этот раздел ещё недоступен</p>
             </div>
 
             <div className="p-6 select-none overflow-y-auto h-full">
@@ -200,7 +272,6 @@ export default function TestExamRunner({ test }) {
               <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Questions 1-{test.questions.length}
               </h3>
-
             </div>
 
             <div className="p-6 space-y-8">
@@ -233,10 +304,11 @@ export default function TestExamRunner({ test }) {
                         .map(([key, value]) => (
                           <label
                             key={key}
-                            className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${selectedAnswer === key
-                              ? "border-qizil2 bg-gradient-to-r from-qizil1/10 to-qizil2/10 shadow-md transform scale-105"
-                              : "border-gray-200 hover:border-qizil1 hover:bg-qizil1/5 hover:shadow-sm"
-                              }`}
+                            className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+                              selectedAnswer === key
+                                ? "border-qizil2 bg-gradient-to-r from-qizil1/10 to-qizil2/10 shadow-md transform scale-105"
+                                : "border-gray-200 hover:border-qizil1 hover:bg-qizil1/5 hover:shadow-sm"
+                            }`}
                           >
                             <input
                               type="radio"
@@ -245,7 +317,9 @@ export default function TestExamRunner({ test }) {
                               checked={selectedAnswer === key}
                               onChange={() => handleSelect(question._id, key)}
                             />
-                            <span className="text-gray-700 font-medium">{value}</span>
+                            <span className="text-gray-700 font-medium">
+                              {value}
+                            </span>
                           </label>
                         ))}
                     </div>
@@ -258,13 +332,19 @@ export default function TestExamRunner({ test }) {
             <div className="p-6 bg-white to-qizil2/30 border-t border-qizil1/20 sticky bottom-0">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-medium text-gray-700">
-                  Progress: <span className="text-qizil2 font-bold">{answers.length}</span> / {test.questions.length} answered
+                  Progress:{" "}
+                  <span className="text-qizil2 font-bold">
+                    {answers.length}
+                  </span>{" "}
+                  / {test.questions.length} answered
                 </span>
                 <div className="flex-1 max-w-xs mx-4">
                   <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-qizil1 to-qizil2 h-full rounded-full transition-all duration-300"
-                      style={{ width: `${(answers.length / test.questions.length) * 100}%` }}
+                      style={{
+                        width: `${(answers.length / test.questions.length) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -281,10 +361,12 @@ export default function TestExamRunner({ test }) {
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-2xl z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2 py-4">
-            <span className="text-sm font-semibold text-gray-600 px-3 py-1 bg-gray-100 rounded-full">Part 1</span>
+            <span className="text-sm font-semibold text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
+              Part 1
+            </span>
             {test.questions.map((question, index) => {
               const isAnswered = answers.some(
-                (a) => a.questionId === question._id,
+                (a) => a.questionId === question._id
               );
 
               return (
@@ -292,7 +374,7 @@ export default function TestExamRunner({ test }) {
                   key={index}
                   onClick={() => {
                     const element = document.querySelector(
-                      `input[name="question-${question._id}"]`,
+                      `input[name="question-${question._id}"]`
                     );
                     if (element) {
                       element.scrollIntoView({
@@ -301,32 +383,45 @@ export default function TestExamRunner({ test }) {
                       });
                     }
                   }}
-                  className={`w-10 h-10 rounded-lg font-bold transition-all duration-200 transform hover:scale-110 ${isAnswered
-                    ? "bg-gradient-to-br from-qizil1 to-qizil2 text-white border-2 border-qizil1/50 shadow-md"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-gray-200"
-                    }`}
+                  className={`w-10 h-10 rounded-lg font-bold transition-all duration-200 transform hover:scale-110 ${
+                    isAnswered
+                      ? "bg-gradient-to-br from-qizil1 to-qizil2 text-white border-2 border-qizil1/50 shadow-md"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-gray-200"
+                  }`}
                 >
                   {index + 1}
                 </button>
               );
             })}
             <button
-              className="ml-6 bg-gradient-to-r from-qizil1 to-qizil2 hover:from-qizil2 hover:to-qizil1 text-white font-bold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="ml-6 bg-gradient-to-r from-qizil1 to-qizil2 hover:from-qizil2 hover:to-qizil1 text-white font-bold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleFinishClick}
+              disabled={loading || answers.length === 0}
             >
               {loading ? "Yuborilmoqda..." : "Завершить"}
             </button>
           </div>
         </div>
       </div>
+
       {openModal && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 transform transition-all animate-in fade-in zoom-in duration-200">
             {/* Success Icon */}
             <div className="flex justify-center pt-8 pb-4">
               <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
             </div>
@@ -338,9 +433,10 @@ export default function TestExamRunner({ test }) {
 
               <div className="bg-gradient-to-r from-qizil1/5 to-qizil2/5 rounded-xl p-6 mb-6 border border-qizil1/20">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-2">Sizning natijangiz:</p>
+                  <p className="text-sm text-gray-600 mb-2">
+                    Sizning natijangiz:
+                  </p>
                   <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-qizil1 to-qizil2">
-
                     {(() => {
                       const value = Number(mess?.result?.successRate);
 
@@ -348,9 +444,6 @@ export default function TestExamRunner({ test }) {
 
                       return `${Math.floor(value).toString().slice(0, 2)}%`;
                     })()}
-
-
-
                   </p>
                 </div>
               </div>
@@ -367,9 +460,6 @@ export default function TestExamRunner({ test }) {
           </div>
         </div>
       )}
-
-
     </div>
-
   );
 }

@@ -433,7 +433,7 @@ const DashboardHome = ({ userData }) => {
           </div>
         </div>
       ) : (
-        <div className="w-full h-auto  flex justify-center "> 
+        <div className="w-full h-auto  flex justify-center ">
           <div className="flex flex-col mx-auto max-w-full min-h-screen">
             <div className="flex w-fit flex-col gap-4">
               <div className="flex items-center gap-4">
@@ -460,7 +460,7 @@ const DashboardHome = ({ userData }) => {
 
             <div className="skeleton w-full mt-5 h-[400px] rounded-lg"></div>
           </div>
-          </div>
+        </div>
       )}
     </>
   );
