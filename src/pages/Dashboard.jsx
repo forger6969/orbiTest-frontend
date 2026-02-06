@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   ClipboardCheck,
+  Users,
 } from "lucide-react";
 import logo from "../assets/logo.svg";
 import DashboardHome from "./DashboardHome";
@@ -17,6 +18,7 @@ import DashboardTests from "./DashboardTests";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import Profil from "./Profil";
+import MyGroup from "./MyGroup";
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -38,6 +40,7 @@ const Dashboard = () => {
 
       const data = req.data.user;
       setData(data);
+      
     } catch (err) {
       console.log(err);
     }
@@ -92,6 +95,7 @@ const Dashboard = () => {
               <Route index element={<DashboardHome userData={userData} />} />
               <Route path="tests" element={<DashboardTests />} />
               <Route path="profil" element={<Profil />} />
+              <Route path="Mygroup" element={<MyGroup />} />
             </Routes>
           </div>
         </div>
@@ -169,6 +173,39 @@ const Dashboard = () => {
                 <button className="flex items-center gap-6">
                   <ClipboardCheck size={24} />
                   <span className={`font-semibold text-base`}>Tests</span>
+                </button>
+              </NavLink>
+
+
+              <NavLink
+                className={({
+                  isActive,
+                }) => `w-full flex items-center gap-4 px-5 py-4 rounded
+                                                    transition-all duration-300 cursor-pointer
+                                                    ${isActive
+                    ? `
+                                                        bg-qizil1
+                                                        text-white
+                                                        shadow-xl
+                                                        scale-105
+                                                        `
+                    : `
+                                                        bg-transparent
+                                                        text-gray-700
+                                                        shadow-none
+                                                        active:bg-red-500
+                                                        active:text-white
+                                                        active:shadow-xl
+                                                        active:scale-105
+                                                        `
+                  }
+                                                    active:scale-95
+                                                    `}
+                to="/dashboard/Mygroup"
+              >
+                <button className="flex items-center gap-6">
+                  <Users size={24}/>
+                  <span className={`font-semibold text-base`}>My group</span>
                 </button>
               </NavLink>
             </nav>
