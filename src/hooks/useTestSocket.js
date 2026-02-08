@@ -11,7 +11,7 @@ export const useTestSocket = (userId) => {
       return;
     }
 
-    const backendUrl = import.meta.env.VITE_BACKEND_API;
+    const backendUrl = import.meta.env.VITE_;
     console.log("🔌 Connecting to:", backendUrl + "/students");
 
     const socket = io(backendUrl + "/students", {
