@@ -10,13 +10,16 @@ import PublicRoute from "./Components/PublicRoute";
 import { AppContext } from "./context/AppContext";
 import TestStart from "./pages/TestStart";
 import TestResults from "./pages/TestResults";
+import Profil from "./pages/Profil";
+import DashboardHome from "./pages/DashboardHome";
+import GoogleAuthSuccess from "./pages/GoogleAuthSuccess";
+import CompleteProfile from "./pages/CompleteProfile";
 
 const App = () => {
-
-  const [userData , setData] = useState(null)
+  const [userData, setData] = useState(null);
 
   return (
-    <AppContext.Provider value={{userData , setData}}>
+    <AppContext.Provider value={{ userData, setData }}>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -59,21 +62,25 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/test/:id"
-        element={
-          <PrivateRoute>
-            <TestStart/>
-          </PrivateRoute>
-        }
+        <Route
+          path="/test/:id"
+          element={
+            <PrivateRoute>
+              <TestStart />
+            </PrivateRoute>
+          }
         />
-        <Route path="/test-results"
-        element={
-          <PrivateRoute>
-            <TestResults/>
-          </PrivateRoute>
-        }
-        
+        <Route
+          path="/test-results"
+          element={
+            <PrivateRoute>
+              <TestResults />
+            </PrivateRoute>
+          }
         />
+
+        <Route path="/auth/google-success" element={<GoogleAuthSuccess />} />
+        <Route path="/complete-profile" element={<CompleteProfile />} />
       </Routes>
     </AppContext.Provider>
   );

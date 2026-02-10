@@ -10,12 +10,18 @@ import {
   Settings,
   LogOut,
   ClipboardCheck,
+  Users,
 } from "lucide-react";
 import logo from "../assets/logo.svg";
 import DashboardHome from "./DashboardHome";
 import DashboardTests from "./DashboardTests";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
+import Profil from "./Profil";
+import MyGroup from "./MyGroup";
+import exam from "../assets/exam.svg"
+import { PiExam } from "react-icons/pi";
+import Exam from "./Exam";
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -37,10 +43,15 @@ const Dashboard = () => {
 
       const data = req.data.user;
       setData(data);
+
     } catch (err) {
       console.log(err);
     }
   };
+
+  let clearn = () => {
+    localStorage.clear()
+  }
 
   useEffect(() => {
     getMe();
@@ -48,6 +59,7 @@ const Dashboard = () => {
 
   return (
     <div>
+
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
@@ -75,7 +87,7 @@ const Dashboard = () => {
                 <path d="M14 10l2 2l-2 2"></path>
               </svg>
             </label>
-            <div className="px-4" onClick={() => navigate('/dashboard')}>
+            <div className="px-4 cursor-pointer" onClick={() => navigate('/dashboard')}>
               Back
             </div>
           </nav>
@@ -85,6 +97,9 @@ const Dashboard = () => {
             <Routes>
               <Route index element={<DashboardHome userData={userData} />} />
               <Route path="tests" element={<DashboardTests />} />
+              <Route path="profil" element={<Profil />} />
+              <Route path="Mygroup" element={<MyGroup />} />
+              <Route path="Exams" element={<Exam />} />
             </Routes>
           </div>
         </div>
@@ -164,6 +179,72 @@ const Dashboard = () => {
                   <span className={`font-semibold text-base`}>Tests</span>
                 </button>
               </NavLink>
+
+              <NavLink
+                className={({
+                  isActive,
+                }) => `w-full flex items-center gap-4 px-5 py-4 rounded
+                                                    transition-all duration-300 cursor-pointer
+                                                    ${isActive
+                    ? `
+                                                        bg-qizil1
+                                                        text-white
+                                                        shadow-xl
+                                                        scale-105
+                                                        `
+                    : `
+                                                        bg-transparent
+                                                        text-gray-700
+                                                        shadow-none
+                                                        active:bg-red-500
+                                                        active:text-white
+                                                        active:shadow-xl
+                                                        active:scale-105
+                                                        `
+                  }
+                                                    active:scale-95
+                                                    `}
+                to="/dashboard/Exams"
+              >
+
+                <button className="flex items-center  gap-6">
+                  <PiExam size={25}/>
+                  <span className={`font-semibold text-base`}>Exam</span>
+                </button>
+              </NavLink>
+
+              <NavLink
+                className={({
+                  isActive,
+                }) => `w-full flex items-center gap-4 px-5 py-4 rounded
+                                                    transition-all duration-300 cursor-pointer
+                                                    ${isActive
+                    ? `
+                                                        bg-qizil1
+                                                        text-white
+                                                        shadow-xl
+                                                        scale-105
+                                                        `
+                    : `
+                                                        bg-transparent
+                                                        text-gray-700
+                                                        shadow-none
+                                                        active:bg-red-500
+                                                        active:text-white
+                                                        active:shadow-xl
+                                                        active:scale-105
+                                                        `
+                  }
+                                                    active:scale-95
+                                                    `}
+                to="/dashboard/Mygroup"
+              >
+
+                <button className="flex items-center gap-6">
+                  <Users size={24} />
+                  <span className={`font-semibold text-base`}>My group</span>
+                </button>
+              </NavLink>
             </nav>
 
             {/* Account Section */}
@@ -220,20 +301,29 @@ const Dashboard = () => {
 
             {/* Body */}
             <div className="p-4 space-y-1">
-              <button className="menu-btn">
-                <User size={18} />
-                Edit Profile
-              </button>
+
+              <Link to="/Dashboard/profil">
+                <button className="menu-btn">
+                  <User size={18} />
+
+                  Edit Profile
+                </button>
+              </Link>
+
 
               <button className="menu-btn">
                 <Settings size={18} />
                 Settings
               </button>
 
-              <button className="menu-btn text-qizil1 hover:bg-qizil1/10">
-                <LogOut size={18} />
-                Log Out
-              </button>
+
+              <Link to={"/"}>
+                <button onClick={clearn} className="menu-btn text-qizil1 hover:bg-qizil1/10">
+                  <LogOut size={18} />
+                  Log Out
+                </button>
+              </Link>
+
             </div>
           </div>
         </div>

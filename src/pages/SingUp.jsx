@@ -3,6 +3,7 @@ import Stepper, { Step } from "../Components/Stepper";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../helper/ShowToast";
+import logo from "../assets/logo.svg";
 
 const SingUp = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const SingUp = () => {
   const getGroups = async () => {
     try {
       const req = await axios.get(
-        import.meta.env.VITE_BACKEND_API + "/api/group/all",
+        import.meta.env.VITE_BACKEND_API + "/api/group/all"
       );
       const data = await req.data;
       setGroups(data);
@@ -67,7 +68,7 @@ const SingUp = () => {
 
   const passwordStrength = useMemo(
     () => getPasswordStrength(formData.password),
-    [formData.password],
+    [formData.password]
   );
 
   const canProceed = useMemo(() => {
@@ -89,7 +90,7 @@ const SingUp = () => {
     }
   }, [currentStep, formData, passwordStrength]);
 
-  const handleComplete = async () => { };
+  const handleComplete = async () => {};
 
   const handleFinalSubmit = async () => {
     try {
@@ -97,7 +98,7 @@ const SingUp = () => {
 
       const req = await axios.post(
         import.meta.env.VITE_BACKEND_API + "/api/auth/register",
-        formData,
+        formData
       );
       showToast("Успешная регистрация", "success");
 
@@ -110,13 +111,8 @@ const SingUp = () => {
     }
   };
 
-  const getOptionLabel = (value) => {
-    const options = {
-      option1: "Опция 1",
-      option2: "Опция 2",
-      option3: "Опция 3",
-    };
-    return options[value] || value;
+  const handleGoogleSignUp = () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_API}/api/auth/google`;
   };
 
   useEffect(() => {
@@ -124,13 +120,13 @@ const SingUp = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#e5e7eb5c] relative">
+    <div className="min-h-screen bg-[#e5e7eb5c] relative pb-20">
       {/* Кнопка "Back to home" */}
       <button
         onClick={() => window.history.back()}
-        className="flex items-center gap-2.5 text-gray-700 text-base font-medium
+        className="flex items-center gap-2.5 text-gray-700 text-base font-medium cursor-pointer
         fixed top-6 left-6
-        group cursor-pointer 
+        group cursor-pointer
         px-6 py-3.5
         rounded-md
         transition-all duration-300
@@ -151,608 +147,282 @@ const SingUp = () => {
         Back to home
       </button>
 
-      <Stepper
-        initialStep={1}
-        canProceed={canProceed}
-        isLoading={isLoading}
-        onStepChange={(step) => {
-          setCurrentStep(step);
-        }}
-        onFinalStepCompleted={handleComplete}
-        backButtonText="Назад"
-        nextButtonText="Далее"
-      >
-        {/* Шаг 1: Имя */}
-        <Step>
-          <div className="space-y-6 pt-8 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Создайте аккаунт
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Начните с вашего имени
-              </p>
+      {/* Секция с быстрой регистрацией через Google */}
+      <div className="flex justify-center pt-20 pb-8">
+        <div className="w-full max-w-[470px] px-4 flex flex-col items-center gap-3">
+          <img width={200} src={logo} alt="logo" />
+          <p className="text-sm text-gray-600">
+            Quick registration with Google
+          </p>
+
+          <div className="bg-white w-full border border-gray-400 rounded-lg p-4 shadow-sm">
+            <p className="text-black text-xl font-semibold mb-2">
+              Sign up with Google
+            </p>
+            <p className="text-sm text-[#737373] mb-4">
+              Fastest way to create your account
+            </p>
+
+            <button
+              type="button"
+              onClick={handleGoogleSignUp}
+              className="
+                w-full py-2.5 px-4 rounded-lg
+                border-2 border-gray-300
+                bg-white hover:bg-gray-50
+                flex items-center justify-center gap-3
+                transition-all
+                font-medium text-gray-700
+                hover:border-gray-400
+                hover:shadow-md
+              "
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              Continue with Google
+            </button>
+
+            {/* Разделитель */}
+            <div className="relative flex items-center justify-center my-6">
+              <div className="border-t border-gray-300 flex-grow"></div>
+              <span className="px-3 text-sm text-gray-500 bg-white">OR</span>
+              <div className="border-t border-gray-300 flex-grow"></div>
             </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="firstName"
-              >
-                Имя
-              </label>
-              <input
-                placeholder="Введите ваше имя"
-                id="firstName"
-                value={formData.firstName}
-                onChange={(e) => handleInputChange("firstName", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.firstName.trim().length > 0
-                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                type="text"
-                autoComplete="off"
-              />
-              {formData.firstName.trim().length === 0 ? (
-                <p className="text-sm text-gray-500 ml-1">
-                  Введите ваше имя
-                </p>
-              ) : (
-                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Отлично!
-                </p>
-              )}
-            </div>
+
+            <p className="text-sm text-gray-600 text-center">
+              Fill out the form below for manual registration
+            </p>
           </div>
-        </Step>
+        </div>
+      </div>
 
-        {/* Шаг 2: Фамилия */}
-        <Step>
-          <div className="space-y-6 pt-8 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Ваша фамилия
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Укажите вашу фамилию
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="lastName"
-              >
-                Фамилия
+      {/* STEPPER - ПОЛНОСТЬЮ ВИДЕН */}
+      <div className="w-full max-w-[600px] mx-auto px-4">
+        <Stepper
+          initialStep={1}
+          canProceed={canProceed}
+          isLoading={isLoading}
+          onStepChange={(step) => {
+            setCurrentStep(step);
+          }}
+          onFinalStepCompleted={handleFinalSubmit}
+          backButtonText="Назад"
+          nextButtonText="Далее"
+        >
+          <Step title="First Name">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Enter your first name
+                </span>
+                <input
+                  type="text"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    handleInputChange("firstName", e.target.value)
+                  }
+                  placeholder="John"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
+                />
               </label>
-              <input
-                placeholder="Введите вашу фамилию"
-                id="lastName"
-                value={formData.lastName}
-                onChange={(e) => handleInputChange("lastName", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.lastName.trim().length > 0
-                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                type="text"
-                autoComplete="off"
-              />
-              {formData.lastName.trim().length === 0 ? (
-                <p className="text-sm text-gray-500 ml-1">
-                  Введите вашу фамилию
-                </p>
-              ) : (
-                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Отлично!
-                </p>
-              )}
             </div>
-          </div>
-        </Step>
+          </Step>
 
-        {/* Шаг 3: Имя пользователя */}
-        <Step>
-          <div className="space-y-6 pt-8 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Имя пользователя
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Выберите уникальное имя пользователя
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="username"
-              >
-                Имя пользователя
+          <Step title="Last Name">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Enter your last name
+                </span>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
+                  placeholder="Doe"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
+                />
               </label>
-              <input
-                placeholder="Введите имя пользователя"
-                id="username"
-                value={formData.username}
-                onChange={(e) => handleInputChange("username", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${formData.username.trim().length > 0
-                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                type="text"
-                autoComplete="off"
-              />
-              {formData.username.trim().length === 0 ? (
-                <p className="text-sm text-gray-500 ml-1">
-                  Введите имя пользователя
-                </p>
-              ) : (
-                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Отлично!
-                </p>
-              )}
             </div>
-          </div>
-        </Step>
+          </Step>
 
-        {/* Шаг 4: Email */}
-        <Step>
-          <div className="space-y-6 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Ваш email
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Укажите действующий email адрес
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="email"
-              >
-                Email
+          <Step title="Username">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Choose a username
+                </span>
+                <input
+                  type="text"
+                  value={formData.username}
+                  onChange={(e) =>
+                    handleInputChange("username", e.target.value)
+                  }
+                  placeholder="johndoe123"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
+                />
               </label>
-              <input
-                placeholder="your@gmail.com"
-                id="email"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${validateEmail(formData.email)
-                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                type="email"
-                autoComplete="off"
-              />
-              {!validateEmail(formData.email) && formData.email.length > 0 ? (
-                <p className="text-sm text-qizil2 ml-1 font-medium">
-                  Введите корректный email адрес
-                </p>
-              ) : !validateEmail(formData.email) ? (
-                <p className="text-sm text-gray-500 ml-1">
-                  Введите корректный email адрес
-                </p>
-              ) : (
-                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Email корректен!
-                </p>
-              )}
             </div>
-          </div>
-        </Step>
+          </Step>
 
-        {/* Шаг 5: Пароль */}
-        <Step>
-          <div className="space-y-6 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Создайте пароль
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Выберите надежный пароль для защиты аккаунта
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="password"
-              >
-                Пароль
+          <Step title="Email">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Enter your email address
+                </span>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  placeholder="john@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
+                />
+                {formData.email && !validateEmail(formData.email) && (
+                  <p className="text-red-500 text-sm mt-2">
+                    Please enter a valid email address
+                  </p>
+                )}
               </label>
-              <input
-                placeholder="Создайте надежный пароль"
-                id="password"
-                value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
-                className={`w-full h-14 rounded-xl px-5 text-base font-medium border-2 focus:outline-none transition-all duration-200 ${passwordStrength.isStrong
-                  ? "border-green-500 focus:border-green-600 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                type="password"
-                autoComplete="off"
-              />
+            </div>
+          </Step>
 
-              {/* Индикатор силы пароля */}
-              {formData.password.length > 0 && (
-                <div className="mt-4">
-                  <div className="flex items-center justify-between mb-2.5">
-                    <p className="text-sm font-semibold text-gray-700">
-                      Надежность пароля:
-                    </p>
-                    <span
-                      className={`text-sm font-bold ${passwordStrength.score <= 2
-                        ? "text-qizil2"
-                        : passwordStrength.score === 3
-                          ? "text-yellow-500"
-                          : passwordStrength.score === 4
-                            ? "text-blue-500"
-                            : "text-green-500"
-                        }`}
-                    >
-                      {passwordStrength.score <= 2
-                        ? "Слабый"
-                        : passwordStrength.score === 3
-                          ? "Средний"
-                          : passwordStrength.score === 4
-                            ? "Хороший"
-                            : "Отличный"}
-                    </span>
-                  </div>
-                  <div className="flex gap-2">
-                    {[1, 2, 3, 4, 5].map((level) => (
+          <Step title="Password">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Create a strong password
+                </span>
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
+                />
+              </label>
+
+              {formData.password && (
+                <div className="space-y-2">
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
                       <div
-                        key={level}
-                        className={`h-2.5 flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= level
-                          ? level <= 2
-                            ? "bg-qizil1"
-                            : level === 3
-                              ? "bg-yellow-400"
-                              : level === 4
-                                ? "bg-blue-400"
+                        key={i}
+                        className={`h-2 flex-1 rounded ${
+                          i < passwordStrength.score
+                            ? passwordStrength.score <= 2
+                              ? "bg-red-500"
+                              : passwordStrength.score === 3
+                                ? "bg-yellow-500"
                                 : "bg-green-500"
-                          : "bg-gray-200"
-                          }`}
+                            : "bg-gray-200"
+                        }`}
                       />
                     ))}
                   </div>
-                </div>
-              )}
 
-              {/* Требования к паролю */}
-              <div className="mt-5 space-y-3 bg-gradient-to-br from-gray-50 to-gray-100/50 p-5 rounded-2xl border border-gray-200">
-                <p className="text-sm font-bold text-gray-800 mb-3">
-                  Требования к паролю:
-                </p>
-
-                {[
-                  { key: "length", label: "Минимум 8 символов" },
-                  { key: "lowercase", label: "Строчная буква (a-z)" },
-                  { key: "uppercase", label: "Заглавная буква (A-Z)" },
-                  { key: "numbers", label: "Цифра (0-9)" },
-                  { key: "special", label: "Спецсимвол (!@#$%^&*)" },
-                ].map(({ key, label }) => (
-                  <div key={key} className="flex items-center gap-3">
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${passwordStrength.checks[key]
-                        ? "bg-green-500 scale-110"
-                        : "bg-gray-300"
-                        }`}
+                  <div className="text-sm space-y-1">
+                    <p
+                      className={
+                        passwordStrength.checks.length
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
                     >
-                      {passwordStrength.checks[key] && (
-                        <svg
-                          className="w-3.5 h-3.5 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <span
-                      className={`text-sm transition-all duration-200 ${passwordStrength.checks[key]
-                        ? "text-green-700 font-semibold"
-                        : "text-gray-600"
-                        }`}
+                      ✓ At least 8 characters
+                    </p>
+                    <p
+                      className={
+                        passwordStrength.checks.lowercase
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
                     >
-                      {label}
-                    </span>
+                      ✓ Lowercase letter
+                    </p>
+                    <p
+                      className={
+                        passwordStrength.checks.uppercase
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
+                    >
+                      ✓ Uppercase letter
+                    </p>
+                    <p
+                      className={
+                        passwordStrength.checks.numbers
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
+                    >
+                      ✓ Number
+                    </p>
+                    <p
+                      className={
+                        passwordStrength.checks.special
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
+                    >
+                      ✓ Special character
+                    </p>
                   </div>
-                ))}
-              </div>
-
-              {passwordStrength.isStrong && (
-                <div className="mt-4 text-sm text-green-600 flex items-center gap-2.5 font-semibold bg-green-50 p-4 rounded-xl border border-green-200">
-                  <svg
-                    className="w-6 h-6 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Отличный пароль! Все требования выполнены
                 </div>
               )}
             </div>
-          </div>
-        </Step>
+          </Step>
 
-        {/* Шаг 6: Выбор группы */}
-        <Step>
-          <div className="space-y-6 px-[30px]">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Последний шаг
-              </h2>
-              <p className="text-gray-500 text-lg">Выберите вашу группу</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label
-                className="font-semibold text-gray-800 text-base"
-                htmlFor="groupID"
-              >
-                Выберите группу
-              </label>
-              <select
-                className={`w-full h-14 px-5 rounded-xl border-2 text-base font-medium focus:outline-none transition-all duration-200 cursor-pointer ${formData.groupID !== ""
-                  ? "border-green-500 text-green-600 bg-green-50/30"
-                  : "border-gray-300 focus:border-qizil2 text-gray-700 bg-white"
-                  }`}
-                value={formData.groupID}
-                onChange={(e) => {
-                  handleInputChange("groupID", e.target.value);
-                }}
-                id="option"
-              >
-                <option value="">Выберите...</option>
-
-                {groups?.groups.map((m) => (
-                  <option key={m._id} value={`${m._id}`}>{m.groupName}</option>
-                ))}
-              </select>
-              {formData.groupID === "" ? (
-                <p className="text-sm text-gray-500 ml-1">Выберите опцию</p>
-              ) : (
-                <p className="text-sm text-green-600 flex items-center gap-2 font-semibold ml-1">
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Выбрано!
-                </p>
-              )}
-            </div>
-          </div>
-        </Step>
-
-        {/* Шаг 7: Подтверждение */}
-        <Step>
-          <div className="space-y-8 px-[30px]">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mb-5 shadow-lg">
-                <svg
-                  className="w-10 h-10 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+          <Step title="Group Selection">
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-gray-700 font-medium mb-2 block">
+                  Select your group
+                </span>
+                <select
+                  value={formData.groupID}
+                  onChange={(e) => handleInputChange("groupID", e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-qizil1 focus:border-transparent transition-all"
+                  autoFocus
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Регистрация завершена!
-              </h2>
-              <p className="text-gray-500 text-lg">
-                Проверьте введенные данные
-              </p>
+                  <option value="">Choose a group...</option>
+                  {groups?.map((group) => (
+                    <option key={group._id} value={group._id}>
+                      {group.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
-
-            <div className="space-y-4 bg-gradient-to-br from-gray-50 to-gray-100/50 p-7 rounded-2xl border border-gray-200">
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Имя
-                  </p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {formData.firstName}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Фамилия
-                  </p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {formData.lastName}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Имя пользователя
-                  </p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {formData.username}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Email
-                  </p>
-                  <p className="text-lg font-bold text-gray-900 break-all">
-                    {formData.email}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Пароль
-                  </p>
-                  <p className="text-lg font-bold text-gray-900">••••••••</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-qizil1 to-qizil2 rounded-xl flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-500 mb-1">
-                    Выбранная группа
-                  </p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {groups?.groups.find(g => g._id === formData.groupID)?.groupName || getOptionLabel(formData.groupID)}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={handleFinalSubmit}
-              className="w-full bg-gradient-to-r from-qizil1 to-qizil2 text-white py-4 rounded-xl font-bold text-lg hover:from-qizil1 hover:to-qizil2 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
-            >
-              Подтвердить регистрацию
-            </button>
-          </div>
-        </Step>
-      </Stepper>
-    </div>);
+          </Step>
+        </Stepper>
+      </div>
+    </div>
+  );
 };
+
 export default SingUp;
