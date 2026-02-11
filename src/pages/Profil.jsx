@@ -76,7 +76,6 @@ const Profil = () => {
           </div>
         </div>
 
-        {/* STATS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="border-gray-200 border-2 rounded-2xl p-6">
             <p className="text-sm text-gray-500">Tests Completed</p>
@@ -94,7 +93,6 @@ const Profil = () => {
           </div>
         </div>
 
-        {/* TABS */}
         <div className="border-gray-200 border-2 rounded-2xl overflow-hidden">
           <div className="flex border-gray-200 border-b-2">
             {['about','activity','tests','settings'].map(tab => (

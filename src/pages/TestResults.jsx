@@ -52,7 +52,6 @@ export default function TestResults() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-      {/* Header */}
       <div className="bg-white/90 backdrop-blur-sm border-b shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -73,7 +72,6 @@ export default function TestResults() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pb-20">
-        {/* Results Summary */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="text-center mb-8">
             <div className="w-24 h-24 bg-gradient-to-br from-qizil1 to-qizil2 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -115,7 +113,6 @@ export default function TestResults() {
           </div>
         </div>
 
-        {/* Detailed Results */}
         {test && (
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Детальные ответы</h2>

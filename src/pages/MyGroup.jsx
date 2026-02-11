@@ -105,7 +105,6 @@ const MyGroup = () => {
                             </div>
 
                             <div className={`text-5xl group-hover:rotate-12 transition-transform bg-${item.color}-50 p-3 rounded-2xl`}>
-                                {/* icon  */}
                             </div>
                         </div>
 

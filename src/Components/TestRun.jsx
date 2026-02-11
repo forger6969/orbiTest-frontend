@@ -19,18 +19,18 @@ export default function TestExamRunner({ test }) {
 
   const mess = JSON.parse(localStorage.getItem("mssage"));
 
-  // Получаем userId и подключаем socket
+  
   const userId = localStorage.getItem("userId");
   const { startTest, finishTest } = useTestSocket(userId);
 
-  // При монтировании компонента - уведомляем что студент начал тест
+  
   React.useEffect(() => {
     if (test && userId) {
       console.log("🎯 Student started test:", test.testTitle);
       startTest(test._id, test.testTitle);
     }
 
-    // При размонтировании - уведомляем что студент вышел
+    
     return () => {
       if (test && userId) {
         console.log("👋 Student left test");
@@ -47,7 +47,7 @@ export default function TestExamRunner({ test }) {
         if (prev <= 1000) {
           setIsRunning(false);
           alert("Время истекло!");
-          handleAutoSubmit(); // Автоматически отправляем при истечении времени
+          handleAutoSubmit(); 
           return 0;
         }
         return prev - 1000;
@@ -102,7 +102,6 @@ export default function TestExamRunner({ test }) {
 
       localStorage.setItem("mssage", JSON.stringify(req.data));
 
-      // ВАЖНО: Уведомляем менторов о завершении теста
       if (userId && data.result) {
         console.log("✅ Notifying mentors - test finished");
         finishTest(test._id, data.result.score, data.result.successRate);
@@ -116,7 +115,6 @@ export default function TestExamRunner({ test }) {
   };
 
   const handleAutoSubmit = async () => {
-    // Автоматическая отправка при истечении времени
     if (!loading) {
       await handleFinishClick();
     }
@@ -146,7 +144,6 @@ export default function TestExamRunner({ test }) {
     });
   };
 
-  // Предупреждение при попытке выйти со страницы
   React.useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (answers.length > 0 && !openModal) {
@@ -162,7 +159,6 @@ export default function TestExamRunner({ test }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-      {/* Header */}
       <div className="bg-white/90 backdrop-blur-sm border-b shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -173,7 +169,6 @@ export default function TestExamRunner({ test }) {
                   if (
                     window.confirm("Вы уверены, что хотите выйти из теста?")
                   ) {
-                    // Уведомляем о выходе
                     if (userId) {
                       finishTest(test._id, 0, 0);
                     }
@@ -191,7 +186,6 @@ export default function TestExamRunner({ test }) {
                 ID: {test._id?.slice(-6) || "16736"}
               </span>
 
-              {/* Индикатор онлайн статуса */}
               <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 В процессе
@@ -266,7 +260,6 @@ export default function TestExamRunner({ test }) {
             </div>
           </div>
 
-          {/* RIGHT SIDE  */}
           <div className="flex-1 bg-white rounded-xl shadow-lg border border-gray-200 overflow-y-auto max-h-[800px]">
             <div className="p-6 sticky top-0 bg-white  border-b-2 border-qizil2 z-10">
               <h3 className="text-lg font-bold text-gray-800 mb-2">
@@ -297,10 +290,9 @@ export default function TestExamRunner({ test }) {
                       </button>
                     </div>
 
-                    {/* Answer Options */}
                     <div className="ml-12 space-y-3">
                       {Object.entries(question.variants)
-                        .filter(([key, value]) => value) // Фильтруем пустые варианты
+                        .filter(([key, value]) => value) 
                         .map(([key, value]) => (
                           <label
                             key={key}
@@ -328,7 +320,6 @@ export default function TestExamRunner({ test }) {
               })}
             </div>
 
-            {/*  Progress  */}
             <div className="p-6 bg-white to-qizil2/30 border-t border-qizil1/20 sticky bottom-0">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-medium text-gray-700">
@@ -357,7 +348,6 @@ export default function TestExamRunner({ test }) {
         </div>
       </div>
 
-      {/*  Navigation  */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-2xl z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2 py-4">

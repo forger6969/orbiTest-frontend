@@ -110,7 +110,6 @@ const Registed = () => {
                 />
               </div>
 
-              {/* Password */}
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Password</label>
                 <input
@@ -129,7 +128,6 @@ const Registed = () => {
                 />
               </div>
 
-              {/* Button */}
               <button
                 type="button"
                 onClick={loginRequest}

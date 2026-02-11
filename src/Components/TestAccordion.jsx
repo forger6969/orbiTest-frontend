@@ -73,11 +73,11 @@ export default function TestsAccordion({ title, tests = [], defaultOpen = true }
 
 function TestCard({ test }) {
   const gradeColor = {
-    junior: "bg-green-400",            // light blue
-    strongJunior: "bg-green-600",   // green
-    middle: "bg-yellow-500",         // yellow
-    strongMiddle: "bg-red-500", // purple
-    senior: "bg-red-600",           // red
+    junior: "bg-green-400",            
+    strongJunior: "bg-green-600",
+    middle: "bg-yellow-500",         
+    strongMiddle: "bg-red-500", 
+    senior: "bg-red-600",           
   }[test.testGrade];
 
   const minutes = Math.round((test.testTime || 0) / 60000);

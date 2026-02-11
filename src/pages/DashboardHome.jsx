@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as Chart from "chart.js";
 
-// Register Chart.js components
 Chart.Chart.register(
   Chart.CategoryScale,
   Chart.LinearScale,
@@ -48,15 +47,6 @@ const DashboardHome = ({ userData }) => {
               fill: true,
               yAxisID: "y",
             },
-            // {
-            //   label: "Success Rate (%)",
-            //   data: successRates,
-            //   borderColor: "rgba(27, 16, 185, 0.349)",
-            //   backgroundColor: "rgba(16, 185, 129, 0.1)",
-            //   tension: 0.4,
-            //   fill: true,
-            //   yAxisID: "y1",
-            // },
           ],
         },
         options: {
@@ -235,7 +225,6 @@ const DashboardHome = ({ userData }) => {
               </div>
             </div>
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               <div className="bg-qizil1 from-qizil1 to-qizil2 rounded-lg shadow-lg p-6 text-white">
                 <div className="flex items-center relative justify-between">
@@ -346,7 +335,6 @@ const DashboardHome = ({ userData }) => {
               </div>
             </div>
 
-            {/* Chart Section */}
             <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Performance Over Time
@@ -356,7 +344,6 @@ const DashboardHome = ({ userData }) => {
               </div>
             </div>
 
-            {/* Test History */}
             <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Test History

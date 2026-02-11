@@ -29,7 +29,6 @@ const Header = () => {
                                     <img className='w-5 pt-0.5' src={strelka} alt="" />
                                 </button>
 
-                                {/* Modal */}
                                 <ModalPractice
                                     isOpen={isModalOpen}
                                     onClose={() => setisModalOpen(false)}

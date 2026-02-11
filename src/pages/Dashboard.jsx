@@ -92,7 +92,6 @@ const Dashboard = () => {
             </div>
           </nav>
 
-          {/* Page content here */}
           <div className="p-4">
             <Routes>
               <Route index element={<DashboardHome userData={userData} />} />
@@ -104,17 +103,14 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="drawer-side border-r-2 border-gray-200">
           <div className="w-80 min-h-full   flex flex-col">
-            {/* Header */}
             <div className="p-6 flex items-center justify-center ">
               <div className="flex justify-center items-center ">
                 <img src={logo} alt="" />
               </div>
             </div>
 
-            {/* Menu Items */}
             <nav className="flex p-4 space-y-2 overflow-y-auto flex-col gap-1">
               <NavLink
                 end
@@ -247,7 +243,6 @@ const Dashboard = () => {
               </NavLink>
             </nav>
 
-            {/* Account Section */}
             <div className="px-2 absolute bottom-2 pb-0">
               <button
                 onClick={() => setShowAccountModal(true)}
@@ -269,7 +264,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Account Modal */}
       {showAccountModal && (
         <div
           onClick={() => setShowAccountModal(false)}
@@ -281,7 +275,6 @@ const Dashboard = () => {
                  rounded-2xl shadow-2xl
                  animate-fadeUp "
           >
-            {/* Header */}
             <div className="flex items-center gap-4 p-5 rounded-t-2xl
                       bg-gradient-to-br from-qizil1/90 to-qizil1 ">
               <div className="w-14 h-14 rounded-full bg-white/15
@@ -299,7 +292,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Body */}
             <div className="p-4 space-y-1">
 
               <Link to="/Dashboard/profil">

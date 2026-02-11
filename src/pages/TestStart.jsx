@@ -9,10 +9,8 @@ const TestStart = () => {
   const navigate = useNavigate();
   const [test, setTest] = useState(null);
 
-  // Получаем userId из localStorage или контекста
-  const userId = localStorage.getItem("userId"); // или из вашего auth контекста
+  const userId = localStorage.getItem("userId"); 
 
-  // Подключаем socket
   const { startTest, finishTest } = useTestSocket(userId);
 
   const getTestById = async () => {
@@ -24,7 +22,6 @@ const TestStart = () => {
       setTest(data);
       console.log(data);
 
-      // ВАЖНО: Уведомляем менторов что студент начал тест
       if (data && userId) {
         startTest(id, data.testTitle);
       }
@@ -37,7 +34,6 @@ const TestStart = () => {
     getTestById();
   }, []);
 
-  // При выходе со страницы - уведомляем о завершении
   useEffect(() => {
     return () => {
       if (test && userId) {
@@ -60,7 +56,6 @@ const TestStart = () => {
         <TestExamRunner
           test={test}
           onGoBack={() => {
-            // При выходе уведомляем менторов
             if (userId) {
               finishTest(id, 0, 0);
             }
