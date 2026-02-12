@@ -3,11 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import axios from "axios";
 import { showToast } from "../helper/ShowToast";
+import { PiEyeSlashFill } from "react-icons/pi";
+import { IoEyeSharp } from "react-icons/io5";
 
 const Registed = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwortrue , setPasswordtru] = useState(true)
+  console.log(passwortrue);
+  
 
   const navigate = useNavigate();
 
@@ -101,35 +106,38 @@ const Registed = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className={`
                   h-10 rounded-lg pl-3 border-2 outline-none
-                  ${
-                    email && !isEmailValid
+                  ${email && !isEmailValid
                       ? "border-red-500 text-red-500"
                       : "border-gray-300"
-                  }
+                    }
                 `}
                 />
               </div>
 
-              {/* Password */}
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 relative">
                 <label className="font-medium">Password</label>
                 <input
-                  type="password"
+                  type={passwortrue ? "password" : "text"}
                   placeholder="Your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={`
                   h-10 rounded-lg pl-3 border-2 outline-none
-                  ${
-                    password && !isPasswordValid
+                  ${password && !isPasswordValid
                       ? "border-red-500 text-red-500"
                       : "border-gray-300"
-                  }
+                    }
                 `}
                 />
+                <button type="button" onClick={(e) => setPasswordtru(!passwortrue)}  className="absolute top-10 right-5">
+                  
+                    {
+                      passwortrue ? <PiEyeSlashFill /> :<IoEyeSharp />
+                    }
+                  
+                </button>
               </div>
 
-              {/* Button */}
               <button
                 type="button"
                 onClick={loginRequest}
@@ -137,11 +145,10 @@ const Registed = () => {
                 className={`
                 mt-2 py-2 rounded-lg flex items-center justify-center gap-2
                 transition-all
-                ${
-                  isFormValid
+                ${isFormValid
                     ? "bg-[#ef4343] text-white hover:bg-red-600"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }
+                  }
               `}
               >
                 {loading && (

@@ -1,5 +1,8 @@
-import React, { useState, Children, useRef, useLayoutEffect } from 'react';
+import React, { useState, Children, useRef, useLayoutEffect, useEffect, createContext, useContext } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+
+const StepperContext = createContext(null);
+export const useStepperEnter = () => useContext(StepperContext);
 
 export default function Stepper({
   children,
@@ -53,7 +56,34 @@ export default function Stepper({
     }
   };
 
+  const handlersRef = useRef({ handleNext, handleComplete, canProceed, isLoading, isLastStep });
+  handlersRef.current = { handleNext, handleComplete, canProceed, isLoading, isLastStep };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const { canProceed, isLoading, isLastStep, handleNext, handleComplete } = handlersRef.current;
+        if (canProceed && !isLoading) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (isLastStep) handleComplete();
+          else handleNext();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
+  }, []);
+
+  const handleEnterPress = () => {
+    if (canProceed && !isLoading) {
+      if (isLastStep) handleComplete();
+      else handleNext();
+    }
+  };
+
   return (
+    <StepperContext.Provider value={handleEnterPress}>
     <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-[#e5e7eb5c]" {...rest}>
       {/* Верхняя часть - индикаторы шагов */}
       <div className="w-full max-w-2xl mb-8">
@@ -101,7 +131,27 @@ export default function Stepper({
 
       {/* Нижняя часть - контент с формами */}
       <div className="w-full max-w-2xl">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden relative">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (canProceed && !isLoading) {
+              if (isLastStep) handleComplete();
+              else handleNext();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              if (canProceed && !isLoading) {
+                if (isLastStep) handleComplete();
+                else handleNext();
+              }
+            }
+          }}
+          className="bg-white rounded-2xl shadow-xl overflow-hidden relative block"
+        >
+          {/* Hidden submit - Enter always triggers form submit even when visible button is disabled */}
+          <button type="submit" className="sr-only" tabIndex={-1} aria-hidden="true" />
           {/* Loader overlay */}
           {isLoading && (
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -126,6 +176,7 @@ export default function Stepper({
               <div className={`flex items-center ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
                 {currentStep !== 1 && (
                   <button
+                    type="button"
                     onClick={handleBack}
                     disabled={isLoading}
                     className={`rounded-lg px-6 py-2.5 font-medium transition-all cursor-pointer duration-300 ${
@@ -139,7 +190,7 @@ export default function Stepper({
                   </button>
                 )}
                 <button
-                  onClick={isLastStep ? handleComplete : handleNext}
+                  type="submit"
                   disabled={!canProceed || isLoading}
                   className={`rounded-lg py-2.5 px-8 font-medium tracking-tight transition-all duration-300 ${
                     canProceed && !isLoading
@@ -153,9 +204,10 @@ export default function Stepper({
               </div>
             </div>
           )}
-        </div>
+        </form>
       </div>
     </div>
+    </StepperContext.Provider>
   );
 }
 
