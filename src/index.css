@@ -44,3 +44,12 @@ input:focus {
 .animate-fadeUp {
   animation: fadeUp 0.2s ease-out;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

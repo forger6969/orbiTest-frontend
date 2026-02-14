@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useNavigate } from "react-router-dom";
+import { MdTranslate } from "react-icons/md";
+import { useLocation } from "react-router-dom";
+
 import {
   Home,
   Book,
@@ -22,11 +25,19 @@ import MyGroup from "./MyGroup";
 import exam from "../assets/exam.svg"
 import { PiExam } from "react-icons/pi";
 import Exam from "./Exam";
+import { useTranslation } from "react-i18next";
+import ExamPage from "./ExamPage";
+
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [userData, setData] = useState(null);
   const navigate = useNavigate()
+  const location = useLocation();
+  const state = location.state;
+
+
+  const [translate, settranslate] = useState(true)
 
   const getMe = async () => {
 
@@ -94,13 +105,20 @@ const Dashboard = () => {
 
           {/* Page content here */}
           <div className="p-4">
-            <Routes>
+            <Routes location={state?.background || location}>
               <Route index element={<DashboardHome userData={userData} />} />
               <Route path="tests" element={<DashboardTests />} />
               <Route path="profil" element={<Profil />} />
               <Route path="Mygroup" element={<MyGroup />} />
-              <Route path="Exams" element={<Exam />} />
+              <Route path="exams" element={<Exam />} />
             </Routes>
+
+            {/* Modal route */}
+            {state?.background && (
+              <Routes>
+                <Route path="exams/:id" element={<ExamPage />} />
+              </Routes>
+            )}
           </div>
         </div>
 
@@ -208,7 +226,7 @@ const Dashboard = () => {
               >
 
                 <button className="flex items-center  gap-6">
-                  <PiExam size={25}/>
+                  <PiExam size={25} />
                   <span className={`font-semibold text-base`}>Exam</span>
                 </button>
               </NavLink>
@@ -312,8 +330,10 @@ const Dashboard = () => {
 
 
               <button className="menu-btn">
-                <Settings size={18} />
-                Settings
+                <MdTranslate size={18} />
+
+                Uz Ru
+
               </button>
 
 
