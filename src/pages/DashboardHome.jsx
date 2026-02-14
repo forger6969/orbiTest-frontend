@@ -13,6 +13,7 @@ import {
   Star,
   Activity,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 // Register Chart.js components
 Chart.Chart.register(
@@ -29,6 +30,7 @@ Chart.Chart.register(
 
 const DashboardHome = ({ userData }) => {
   const [chartInstance, setChartInstance] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (userData && userData.testsHistory && userData.testsHistory.length > 0) {
@@ -49,7 +51,7 @@ const DashboardHome = ({ userData }) => {
           labels: labels,
           datasets: [
             {
-              label: "Score",
+              label: t('dashboard.home.score'),
               data: scores,
               borderColor: "#ef4444",
               backgroundColor: "rgba(239, 68, 68, 0.05)",
@@ -82,7 +84,7 @@ const DashboardHome = ({ userData }) => {
                   return `${test.test.testTitle}`;
                 },
                 label: function (context) {
-                  return `Score: ${context.parsed.y}`;
+                  return `${t('dashboard.home.score')}: ${context.parsed.y}`;
                 },
               },
             },
@@ -109,7 +111,7 @@ const DashboardHome = ({ userData }) => {
         chartInstance.destroy();
       }
     };
-  }, [userData]);
+  }, [userData, t]);
 
   const getGradeBadge = (grade) => {
     const colors = {
@@ -186,7 +188,7 @@ const DashboardHome = ({ userData }) => {
                   {userData.grade}
                 </span>
                 <span className="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
-                  {userData.gradeExperience} Years Experience
+                  {userData.gradeExperience} {t('dashboard.home.experience')}
                 </span>
                 <span className="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-qizil1/5 text-qizil1 border border-qizil1/10">
                   {userData.role.toUpperCase()}
@@ -204,7 +206,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
               <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
-                Total Tests
+                {t('dashboard.home.totalTests')}
               </p>
               <h3 className="text-3xl font-black text-slate-900 mt-1">
                 {totalTests}
@@ -218,7 +220,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
               <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
-                Avg Score
+                {t('dashboard.home.avgScore')}
               </p>
               <h3 className="text-3xl font-black text-slate-900 mt-1">
                 {averageScore}
@@ -232,7 +234,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
               <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
-                Success Rate
+                {t('dashboard.home.successRate')}
               </p>
               <h3 className="text-3xl font-black text-slate-900 mt-1">
                 {averageSuccessRate}%
@@ -246,7 +248,7 @@ const DashboardHome = ({ userData }) => {
                 </div>
               </div>
               <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
-                Answers
+                {t('dashboard.home.answers')}
               </p>
               <h3 className="text-3xl font-black text-slate-900 mt-1">
                 {correctAnswers}/{totalQuestions}
@@ -260,7 +262,7 @@ const DashboardHome = ({ userData }) => {
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                   <Activity className="w-5 h-5 text-qizil1" />
-                  Performance Over Time
+                  {t('dashboard.home.performance')}
                 </h2>
               </div>
               <div className="h-80">
@@ -272,7 +274,7 @@ const DashboardHome = ({ userData }) => {
             <div className="bg-white p-8 rounded-2xl border border-slate-200/60 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-qizil1" />
-                Test History
+                {t('dashboard.home.history')}
               </h2>
               <div className="space-y-6 overflow-y-auto max-h-[400px] pr-2 scrollbar-thin">
                 {userData.testsHistory &&
@@ -290,7 +292,7 @@ const DashboardHome = ({ userData }) => {
                       </p>
                       <div className="flex items-center gap-3 mt-2">
                         <span className="text-xs font-bold text-qizil1 bg-qizil1/5 px-2 py-0.5 rounded-lg border border-qizil1/10">
-                          {test.score} pts
+                          {test.score} {t('dashboard.home.score').toLowerCase()}
                         </span>
                         <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">
                           {test.successRate.toFixed(0)}%
@@ -304,7 +306,7 @@ const DashboardHome = ({ userData }) => {
                     <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
                       <FileText className="w-6 h-6 text-slate-300" />
                     </div>
-                    <p className="text-sm text-slate-400">No tests taken yet</p>
+                    <p className="text-sm text-slate-400">{t('dashboard.home.noTests')}</p>
                   </div>
                 )}
               </div>
@@ -312,6 +314,7 @@ const DashboardHome = ({ userData }) => {
           </div>
         </>
       ) : (
+
         /* Enhanced Skeleton */
         <div className="space-y-8 animate-pulse">
           <div className="h-48 bg-white rounded-2xl border border-slate-200/60" />

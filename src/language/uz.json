@@ -57,29 +57,64 @@
       "company": "Kompaniya",
       "resources": "Resurslar",
       "contact": "Aloqa"
+    }
+  },
+  "dashboard": {
+    "sidebar": {
+      "mainMenu": "Asosiy menyu",
+      "home": "Bosh sahifa",
+      "tests": "Testlar",
+      "exam": "Imtihon",
+      "myWorks": "Mening ishlarim",
+      "myGroup": "Mening guruhim",
+      "editProfile": "Profil",
+      "logout": "Chiqish"
     },
-    "crm": {
-      "title": "Shunchaki test emas — To'liq CRM",
-      "subtitle": "Butun o'quv jarayonini bitta tizimda boshqaring. Davomatdan tortib moliyaviy tahlillargacha.",
-      "feature1": "Guruhlarni boshqarish",
-      "feature1Desc": "Guruhlarni oson yarating, talabalarni taqsimlang va ularning dars jadvalini kuzatib boring.",
-      "feature2": "To'lovlar nazorati",
-      "feature2Desc": "Har bir o'quvchining to'lovlari va qarzdorliklarining avtomatlashtirilgan hisobi.",
-      "feature3": "Progress tahlili",
-      "feature3Desc": "Har bir talaba va guruh bo'yicha real vaqtdagi batafsil hisobotlar."
+    "home": {
+      "welcome": "Xush kelibsiz",
+      "experience": "yil tajriba",
+      "totalTests": "Jami testlar",
+      "avgScore": "O'rtacha ball",
+      "successRate": "Muvaffaqiyat",
+      "answers": "Javoblar",
+      "performance": "Natijalar dinamikasi",
+      "history": "Testlar tarixi",
+      "noTests": "Testlar hali yo'q",
+      "score": "Ball"
     },
-    "feedback": {
-      "title": "Foydalanuvchilarimiz fikrlari",
-      "user1": {
-        "name": "Alisher Karimov",
-        "role": "O'quv markazi direktori",
-        "text": "OrbiTest test topshirishga bo'lgan yondashuvimizni butunlay o'zgartirdi. Endi biz har bir o'quvchining natijasini raqamlarda ko'ryapmiz."
-      },
-      "user2": {
-        "name": "Madina Ahmedova",
-        "role": "Matematika o'qituvchisi",
-        "text": "CRM tizimi juda qulay. Testlarni tekshirish va jurnallarni to'ldirishda juda ko'p vaqtimni tejayapman."
-      }
+    "tests": {
+      "title": "Mavjud testlar",
+      "subtitle": "Bilimingizni baholash uchun testni tanlang.",
+      "loading": "Testlar yuklanmoqda...",
+      "allTests": "Barcha testlar"
+    },
+    "notifications": {
+      "title": "Bildirishnomalar",
+      "new": "Yangi",
+      "none": "Bildirishnomalar yo'q"
+    }
+  },
+  "crm": {
+    "title": "Shunchaki test emas — To'liq CRM",
+    "subtitle": "Butun o'quv jarayonini bitta tizimda boshqaring. Davomatdan tortib moliyaviy tahlillargacha.",
+    "feature1": "Guruhlarni boshqarish",
+    "feature1Desc": "Guruhlarni oson yarating, talabalarni taqsimlang va ularning dars jadvalini kuzatib boring.",
+    "feature2": "To'lovlar nazorati",
+    "feature2Desc": "Har bir o'quvchining to'lovlari va qarzdorliklarining avtomatlashtirilgan hisobi.",
+    "feature3": "Progress tahlili",
+    "feature3Desc": "Har bir talaba va guruh bo'yicha real vaqtdagi batafsil hisobotlar."
+  },
+  "feedback": {
+    "title": "Foydalanuvchilarimiz fikrlari",
+    "user1": {
+      "name": "Alisher Karimov",
+      "role": "O'quv markazi direktori",
+      "text": "OrbiTest test topshirishga bo'lgan yondashuvimizni butunlay o'zgartirdi. Endi biz har bir o'quvchining natijasini raqamlarda ko'ryapmiz."
+    },
+    "user2": {
+      "name": "Madina Ahmedova",
+      "role": "Matematika o'qituvchisi",
+      "text": "CRM tizimi juda qulay. Testlarni tekshirish va jurnallarni to'ldirishda juda ko'p vaqtimni tejayapman."
     }
   }
 }

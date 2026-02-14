@@ -21,6 +21,7 @@ import {
   Bell,
   ChevronDown,
   FileText,
+  CheckCircle,
 } from "lucide-react";
 import logo from "../assets/logo.svg";
 import DashboardHome from "./DashboardHome";
@@ -34,6 +35,8 @@ import { PiExam } from "react-icons/pi";
 import Exam from "./Exam";
 import { useSocket } from "../hooks/useSocket";
 import MyWorks from "./MyWorks";
+import { useTranslation } from "react-i18next";
+import { useRef } from "react";
 
 const Dashboard = () => {
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -41,6 +44,12 @@ const Dashboard = () => {
   const [userData, setData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const notifRef = useRef(null);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   const { notifications, markAsViewed } = useSocket(userData?._id);
 
@@ -63,6 +72,27 @@ const Dashboard = () => {
 
   useEffect(() => {
     getMe();
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setShowAccountModal(false);
+        setShowNotifModal(false);
+      }
+    };
+
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setShowNotifModal(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -99,9 +129,26 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="flex-none gap-2">
+            <div className="flex gap-2">
+              {/* Language Switcher */}
+              <div className="flex gap-2 items-center mr-4">
+                <button
+                  onClick={() => changeLanguage("uz")}
+                  className={`cursor-pointer font-bold text-xs ${i18n.language === "uz" ? "text-qizil1" : "text-slate-400"}`}
+                >
+                  UZ
+                </button>
+                <span className="text-slate-200">|</span>
+                <button
+                  onClick={() => changeLanguage("ru")}
+                  className={`cursor-pointer font-bold text-xs ${i18n.language === "ru" ? "text-qizil1" : "text-slate-400"}`}
+                >
+                  RU
+                </button>
+              </div>
+
               {/* Notifications */}
-              <div className="relative mr-2">
+              <div className="relative mr-2" ref={notifRef}>
                 <button
                   onClick={() => setShowNotifModal(!showNotifModal)}
                   className="p-2.5 rounded-xl hover:bg-slate-100 transition-all relative group"
@@ -129,11 +176,11 @@ const Dashboard = () => {
                     >
                       <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
                         <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">
-                          Notifications
+                          {t("dashboard.notifications.title")}
                         </h3>
                         {unreadCount > 0 && (
                           <span className="text-[10px] font-black bg-qizil1 text-white px-2 py-0.5 rounded-full">
-                            {unreadCount} New
+                            {unreadCount} {t("dashboard.notifications.new")}
                           </span>
                         )}
                       </div>
@@ -176,7 +223,7 @@ const Dashboard = () => {
                               className="text-slate-100 mx-auto mb-3"
                             />
                             <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">
-                              No notifications
+                              {t("dashboard.notifications.none")}
                             </p>
                           </div>
                         )}
@@ -221,7 +268,7 @@ const Dashboard = () => {
 
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
               <div className="px-4 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                Main Menu
+                {t("dashboard.sidebar.mainMenu")}
               </div>
 
               <NavLink
@@ -232,7 +279,7 @@ const Dashboard = () => {
                 }
               >
                 <Home size={20} />
-                <span className="text-sm">Homepage</span>
+                <span className="text-sm">{t("dashboard.sidebar.home")}</span>
               </NavLink>
 
               <NavLink
@@ -242,7 +289,7 @@ const Dashboard = () => {
                 }
               >
                 <ClipboardCheck size={20} />
-                <span className="text-sm">Tests</span>
+                <span className="text-sm">{t("dashboard.sidebar.tests")}</span>
               </NavLink>
 
               <NavLink
@@ -252,7 +299,7 @@ const Dashboard = () => {
                 }
               >
                 <PiExam size={20} />
-                <span className="text-sm">Exam</span>
+                <span className="text-sm">{t("dashboard.sidebar.exam")}</span>
               </NavLink>
 
               <NavLink
@@ -262,7 +309,9 @@ const Dashboard = () => {
                 }
               >
                 <FileText size={20} />
-                <span className="text-sm">My Works</span>
+                <span className="text-sm">
+                  {t("dashboard.sidebar.myWorks")}
+                </span>
               </NavLink>
 
               <NavLink
@@ -272,7 +321,9 @@ const Dashboard = () => {
                 }
               >
                 <Users size={20} />
-                <span className="text-sm">My group</span>
+                <span className="text-sm">
+                  {t("dashboard.sidebar.myGroup")}
+                </span>
               </NavLink>
             </nav>
 
@@ -336,7 +387,7 @@ const Dashboard = () => {
                   className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-all font-bold text-sm"
                 >
                   <User size={18} />
-                  Edit Profile
+                  {t("dashboard.sidebar.editProfile")}
                 </Link>
                 <div className="h-px bg-slate-50 my-2"></div>
                 <Link
@@ -345,7 +396,7 @@ const Dashboard = () => {
                   className="w-full flex items-center gap-3 px-4 py-3 text-qizil1 hover:bg-red-50 rounded-xl transition-all font-black text-sm uppercase tracking-widest"
                 >
                   <LogOut size={18} />
-                  Log Out
+                  {t("dashboard.sidebar.logout")}
                 </Link>
               </div>
             </motion.div>
