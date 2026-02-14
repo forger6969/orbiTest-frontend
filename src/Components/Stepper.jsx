@@ -54,10 +54,10 @@ export default function Stepper({
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-[#e5e7eb5c]" {...rest}>
+    <div className="flex flex-col items-center justify-center py-4 bg-transparent" {...rest}>
       {/* Верхняя часть - индикаторы шагов */}
       <div className="w-full max-w-2xl mb-8">
-        <div className={`bg-white rounded-2xl shadow-lg p-6 ${stepContainerClassName}`}>
+        <div className={`bg-white rounded-3xl border border-slate-200/60 shadow-xl shadow-slate-900/5 p-6 ${stepContainerClassName}`}>
           <div className="flex w-full items-center justify-center">
             {stepsArray.map((_, index) => {
               const stepNumber = index + 1;
@@ -101,12 +101,12 @@ export default function Stepper({
 
       {/* Нижняя часть - контент с формами */}
       <div className="w-full max-w-2xl">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden relative">
+        <div className="bg-white rounded-3xl border border-slate-200/60 shadow-2xl shadow-slate-900/5 overflow-hidden relative">
           {/* Loader overlay */}
           {isLoading && (
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
               <div className="relative">
-                <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
+                <div className="w-16 h-16 border-4 border-slate-100 rounded-full"></div>
                 <div className="w-16 h-16 border-4 border-qizil1 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
               </div>
             </div>
@@ -122,16 +122,16 @@ export default function Stepper({
           </StepContentWrapper>
 
           {!isCompleted && (
-            <div className={`px-8 pb-8 border-t border-gray-100 pt-6 ${footerClassName}`}>
+            <div className={`px-8 pb-8 border-t border-slate-50 pt-6 ${footerClassName}`}>
               <div className={`flex items-center ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
                 {currentStep !== 1 && (
                   <button
                     onClick={handleBack}
                     disabled={isLoading}
-                    className={`rounded-lg px-6 py-2.5 font-medium transition-all cursor-pointer duration-300 ${
+                    className={`rounded-xl px-6 py-2.5 font-bold transition-all cursor-pointer duration-300 ${
                       isLoading
-                        ? 'opacity-50 cursor-not-allowed text-gray-400'
-                        : 'text-gray-600 hover:text-qizil1 hover:bg-red-50'
+                        ? 'opacity-50 cursor-not-allowed text-slate-300'
+                        : 'text-slate-400 hover:text-qizil1 hover:bg-slate-50'
                     }`}
                     {...backButtonProps}
                   >
@@ -141,10 +141,10 @@ export default function Stepper({
                 <button
                   onClick={isLastStep ? handleComplete : handleNext}
                   disabled={!canProceed || isLoading}
-                  className={`rounded-lg py-2.5 px-8 font-medium tracking-tight transition-all duration-300 ${
+                  className={`rounded-xl py-3 px-10 font-black tracking-widest transition-all duration-300 uppercase text-xs shadow-lg ${
                     canProceed && !isLoading
-                      ? 'bg-qizil1 text-white hover:bg-qizil2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ? 'bg-qizil1 text-white hover:bg-qizil2 shadow-qizil1/20 hover:shadow-qizil1/30 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95'
+                      : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                   }`}
                   {...nextButtonProps}
                 >

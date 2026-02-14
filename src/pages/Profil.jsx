@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { User, Mail, Phone, MapPin, Calendar, Briefcase, Award, Heart, Settings, Edit2 } from 'lucide-react';
-import axios from 'axios';
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Briefcase,
+  Award,
+  Heart,
+  Settings,
+  Edit2,
+  ChevronRight,
+  Shield,
+  Activity,
+  FileText,
+} from "lucide-react";
+import axios from "axios";
+import { motion } from "framer-motion";
 
 const Profil = () => {
-  const [activeTab, setActiveTab] = useState('about');
+  const [activeTab, setActiveTab] = useState("about");
   const [userData, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,103 +45,179 @@ const Profil = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex justify-center p-6">
-        <div className="w-full max-w-4xl space-y-6">
-          <div className="flex items-center gap-6">
-            <div className="animate-pulse rounded-full bg-gray-200 h-32 w-32" />
-            <div className="flex-1 space-y-4">
-              <div className="h-6 w-48 bg-gray-200 rounded animate-pulse" />
-              <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
-              <div className="h-8 w-40 bg-gray-200 rounded-full animate-pulse" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1,2,3].map(i => (
-              <div key={i} className="h-28 bg-gray-200 rounded-xl animate-pulse" />
-            ))}
-          </div>
-
-          <div className="h-64 bg-gray-200 rounded-xl animate-pulse" />
+      <div className="max-w-5xl mx-auto space-y-8 animate-pulse">
+        <div className="h-48 bg-white rounded-2xl border border-slate-200/60" />
+        <div className="grid grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-32 bg-white rounded-2xl border border-slate-200/60"
+            />
+          ))}
         </div>
+        <div className="h-96 bg-white rounded-2xl border border-slate-200/60" />
       </div>
     );
   }
 
+  const getGradeBadge = (grade) => {
+    const colors = {
+      strongJunior: "bg-purple-50 text-purple-700 border-purple-100",
+      junior: "bg-blue-50 text-blue-700 border-blue-100",
+      middle: "bg-amber-50 text-amber-700 border-amber-100",
+      senior: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    };
+    return colors[grade] || "bg-slate-50 text-slate-700 border-slate-100";
+  };
+
   return (
-    <div className="min-h-screen bg-white p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
+      {/* Header Profile Card */}
+      <div className="bg-white rounded-2xl p-8 border border-slate-200/60 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-32 -mt-32 -z-0 opacity-50" />
 
-        <div className="bg-white  rounded-2xl p-6 relative border-gray-200 border-2" >
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-32 h-32 rounded-full  bg-red-500 shadow-red-500   flex items-center justify-center ">
-              <User className="w-16 h-16 bg text-gray-400" />
+        <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+          <div className="relative">
+            <div className="w-32 h-32 rounded-2xl bg-qizil1/5 border-4 border-slate-50 overflow-hidden shadow-md">
+              {userData?.avatar ? (
+                <img
+                  src={userData.avatar}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="w-16 h-16 text-qizil1/30" />
+                </div>
+              )}
             </div>
+            <button className="absolute -bottom-2 -right-2 p-2 bg-white rounded-xl shadow-lg border border-slate-100 hover:text-qizil1 transition-colors">
+              <Edit2 size={16} />
+            </button>
+          </div>
 
-            <div className="flex-1 text-center md:text-left ">
-              <h1 className="text-2xl font-bold text-gray-800">
-                {userData?.lastName} {userData?.firstName}
-              </h1>
-              <p className="text-sm text-gray-500">ID: {userData?._id}</p>
-              <span className="inline-block mt-3 px-4 py-1 rounded-full bg-red-500 text-white text-sm font-semibold">
-                Grade: {userData?.grade}
+          <div className="flex-1 text-center md:text-left">
+            <h1 className="text-3xl font-black text-slate-900 mb-1">
+              {userData?.firstName} {userData?.lastName}
+            </h1>
+            <p className="text-slate-500 font-medium flex items-center justify-center md:justify-start gap-2">
+              <span className="opacity-60">ID:</span>{" "}
+              {userData?._id?.slice(-8).toUpperCase()}
+            </p>
+            <div className="flex flex-wrap gap-3 mt-5 justify-center md:justify-start">
+              <span
+                className={`px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider border ${getGradeBadge(userData?.grade)}`}
+              >
+                {userData?.grade} Grade
+              </span>
+              <span className="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                Active Student
               </span>
             </div>
-
-
           </div>
         </div>
+      </div>
 
-        {/* STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="border-gray-200 border-2 rounded-2xl p-6">
-            <p className="text-sm text-gray-500">Tests Completed</p>
-            <p className="text-3xl font-bold text-red-500">{userData?.testsHistory.length}</p>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-blue-50 rounded-xl">
+              <FileText className="w-5 h-5 text-blue-600" />
+            </div>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+              Tests Taken
+            </p>
           </div>
-
-          <div className="border-gray-200 border-2 rounded-2xl p-6">
-            <p className="text-sm text-gray-500">Experience</p>
-            <p className="text-3xl font-bold text-red-500">5+</p>
-          </div>
-
-          <div className="border-gray-200 border-2 rounded-2xl p-6">
-            <p className="text-sm text-gray-500">Status</p>
-            <p className="text-3xl font-bold text-red-500">Active</p>
-          </div>
+          <h3 className="text-3xl font-black text-slate-900">
+            {userData?.testsHistory?.length || 0}
+          </h3>
         </div>
 
-        {/* TABS */}
-        <div className="border-gray-200 border-2 rounded-2xl overflow-hidden">
-          <div className="flex border-gray-200 border-b-2">
-            {['about','activity','tests','settings'].map(tab => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-3 font-medium transition ${
-                  activeTab === tab
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-qizil1/5 rounded-xl">
+              <Activity className="w-5 h-5 text-qizil1" />
+            </div>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+              Experience
+            </p>
           </div>
+          <h3 className="text-3xl font-black text-slate-900">
+            {userData?.gradeExperience}+ Yrs
+          </h3>
+        </div>
 
-          <div className="p-6">
-            {activeTab === 'about' && (
-              <div className="space-y-4">
-                <InfoRow icon={<Mail />} label="Email" value={userData?.email} />
-                <InfoRow icon={<Phone />} label="Phone" value="+998 90 123 45 67" />
-                <InfoRow icon={<MapPin />} label="Location" value="Tashkent, Uzbekistan" />
-                <InfoRow icon={<Briefcase />} label="Portfolio" value="www.portfolio.com" />
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-emerald-50 rounded-xl">
+              <Shield className="w-5 h-5 text-emerald-600" />
+            </div>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+              Status
+            </p>
+          </div>
+          <h3 className="text-3xl font-black text-slate-900">Verified</h3>
+        </div>
+      </div>
+
+      {/* Main Tabs Section */}
+      <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+        <div className="flex border-b border-slate-100 p-2 bg-slate-50/50">
+          {["about", "activity", "tests", "settings"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all uppercase tracking-widest ${
+                activeTab === tab
+                  ? "bg-white text-qizil1 shadow-sm border border-slate-200/60"
+                  : "text-slate-400 hover:text-slate-600 hover:bg-white/50"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        <div className="p-8">
+          {activeTab === "about" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InfoRow
+                icon={<Mail size={20} />}
+                label="Email Address"
+                value={userData?.email}
+              />
+              <InfoRow
+                icon={<Phone size={20} />}
+                label="Phone Number"
+                value="+998 90 123 45 67"
+              />
+              <InfoRow
+                icon={<MapPin size={20} />}
+                label="Current Location"
+                value="Tashkent, Uzbekistan"
+              />
+              <InfoRow
+                icon={<Briefcase size={20} />}
+                label="Personal Portfolio"
+                value="www.orbitest.uz"
+              />
+            </div>
+          )}
+
+          {activeTab !== "about" && (
+            <div className="text-center py-20">
+              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Settings className="w-8 h-8 text-slate-200 animate-spin-slow" />
               </div>
-            )}
-
-            {activeTab !== 'about' && (
-              <div className="text-center py-10 text-gray-400">Coming soon</div>
-            )}
-          </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Section in development
+              </h3>
+              <p className="text-slate-400 text-sm">
+                We are working on this feature. It will be available soon.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -133,12 +225,20 @@ const Profil = () => {
 };
 
 const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-center gap-4 border-gray-200 border-2 rounded-xl p-4">
-    <div className="text-red-500">{icon}</div>
-    <div>
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="font-medium text-gray-800">{value}</p>
+  <div className="group flex items-center gap-5 p-5 rounded-2xl border border-slate-100 hover:border-qizil1/20 hover:bg-slate-50/50 transition-all duration-300">
+    <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 group-hover:bg-qizil1/5 group-hover:text-qizil1 transition-colors">
+      {icon}
     </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">
+        {label}
+      </p>
+      <p className="text-sm font-bold text-slate-800 truncate">{value}</p>
+    </div>
+    <ChevronRight
+      size={16}
+      className="text-slate-200 group-hover:text-slate-400 transition-colors"
+    />
   </div>
 );
 

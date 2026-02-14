@@ -28,12 +28,19 @@ const DashboardTests = () => {
   }, []);
 
   return (
-    <div>
-      {loading ? (
-        <TestsAccordionSkeleton title={"Barcha testlar"} />
-      ) : (
-        tests && <TestsAccordion title={"Barcha testlar"} tests={tests} />
-      )}
+    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="mb-2 text-center md:text-left">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Available Tests</h1>
+        <p className="text-slate-500 font-medium mt-1">Choose a test to evaluate your current knowledge level.</p>
+      </div>
+
+      <div className="relative">
+        {loading ? (
+          <TestsAccordionSkeleton title={"Loading tests..."} />
+        ) : (
+          tests && <TestsAccordion title={"All Tests"} tests={tests} />
+        )}
+      </div>
     </div>
   );
 };

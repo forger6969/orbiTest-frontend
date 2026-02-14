@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as Chart from "chart.js";
+import {
+  FileText,
+  Award,
+  TrendingUp,
+  CheckCircle,
+  Clock,
+  Calendar,
+  ChevronRight,
+  UserCheck,
+  Star,
+  Activity,
+} from "lucide-react";
 
 // Register Chart.js components
 Chart.Chart.register(
@@ -12,7 +24,7 @@ Chart.Chart.register(
   Chart.Title,
   Chart.Tooltip,
   Chart.Legend,
-  Chart.Filler,
+  Chart.Filler
 );
 
 const DashboardHome = ({ userData }) => {
@@ -27,12 +39,9 @@ const DashboardHome = ({ userData }) => {
       }
 
       const labels = userData.testsHistory.map(
-        (test, index) => `${test.test.testTitle}`,
+        (test) => `${test.test.testTitle}`
       );
       const scores = userData.testsHistory.map((test) => test.score);
-      const successRates = userData.testsHistory.map(
-        (test) => test.successRate,
-      );
 
       const newChart = new Chart.Chart(ctx, {
         type: "line",
@@ -43,87 +52,50 @@ const DashboardHome = ({ userData }) => {
               label: "Score",
               data: scores,
               borderColor: "#ef4444",
-              backgroundColor: "rgba(253, 97, 54, 0.2)",
+              backgroundColor: "rgba(239, 68, 68, 0.05)",
               tension: 0.4,
               fill: true,
-              yAxisID: "y",
+              pointBackgroundColor: "#fff",
+              pointBorderColor: "#ef4444",
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              pointHoverRadius: 6,
             },
-            // {
-            //   label: "Success Rate (%)",
-            //   data: successRates,
-            //   borderColor: "rgba(27, 16, 185, 0.349)",
-            //   backgroundColor: "rgba(16, 185, 129, 0.1)",
-            //   tension: 0.4,
-            //   fill: true,
-            //   yAxisID: "y1",
-            // },
           ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          interaction: {
-            mode: "index",
-            intersect: false,
-          },
           plugins: {
             legend: {
-              display: true,
-              position: "top",
+              display: false,
             },
             tooltip: {
+              backgroundColor: "#1e293b",
+              padding: 12,
+              cornerRadius: 8,
+              titleFont: { size: 14, weight: "bold" },
               callbacks: {
                 title: function (context) {
                   const index = context[0].dataIndex;
                   const test = userData.testsHistory[index];
-                  return `${test.test.testTitle} - ${new Date(test.createdAt).toLocaleDateString()}`;
-                },
-                afterTitle: function (context) {
-                  const index = context[0].dataIndex;
-                  const test = userData.testsHistory[index];
-                  const correctAnswers = test.answers.filter(
-                    (a) => a.correct,
-                  ).length;
-                  const totalQuestions = test.answers.length;
-                  return `Correct: ${correctAnswers}/${totalQuestions}`;
+                  return `${test.test.testTitle}`;
                 },
                 label: function (context) {
-                  let label = context.dataset.label || "";
-                  if (label) {
-                    label += ": ";
-                  }
-                  if (context.parsed.y !== null) {
-                    label +=
-                      context.dataset.label === "Success Rate (%)"
-                        ? context.parsed.y.toFixed(2) + "%"
-                        : context.parsed.y;
-                  }
-                  return label;
+                  return `Score: ${context.parsed.y}`;
                 },
               },
             },
           },
           scales: {
             y: {
-              type: "linear",
-              display: true,
-              position: "left",
-              title: {
-                display: true,
-                text: "Score",
-              },
+              beginAtZero: true,
+              grid: { color: "#f1f5f9" },
+              ticks: { color: "#94a3b8", font: { size: 11 } },
             },
-            y1: {
-              type: "linear",
-              display: true,
-              position: "right",
-              title: {
-                display: true,
-                text: "Success Rate (%)",
-              },
-              grid: {
-                drawOnChartArea: false,
-              },
+            x: {
+              grid: { display: false },
+              ticks: { color: "#94a3b8", font: { size: 11 } },
             },
           },
         },
@@ -139,36 +111,17 @@ const DashboardHome = ({ userData }) => {
     };
   }, [userData]);
 
-  const getRoleBadge = (role) => {
-    const colors = {
-      admin: "bg-red-100 text-red-800",
-      user: "bg-blue-100 text-blue-800",
-      teacher: "bg-green-100 text-green-800",
-    };
-    return colors[role] || "bg-gray-100 text-gray-800";
-  };
-
   const getGradeBadge = (grade) => {
     const colors = {
-      strongJunior: "bg-purple-100 text-purple-800",
-      junior: "bg-indigo-100 text-indigo-800",
-      middle: "bg-blue-100 text-blue-800",
-      senior: "bg-green-100 text-green-800",
+      strongJunior: "bg-purple-50 text-purple-700 border-purple-100",
+      junior: "bg-blue-50 text-blue-700 border-blue-100",
+      middle: "bg-amber-50 text-amber-700 border-amber-100",
+      senior: "bg-emerald-50 text-emerald-700 border-emerald-100",
     };
-    return colors[grade] || "bg-gray-100 text-gray-800";
+    return colors[grade] || "bg-slate-50 text-slate-700 border-slate-100";
   };
 
-  const formatGrade = (grade) => {
-    const gradeMap = {
-      strongJunior: "Strong Junior",
-      junior: "Junior",
-      middle: "Middle",
-      senior: "Senior",
-    };
-    return gradeMap[grade] || grade;
-  };
-
-  const totalTests = userData?.testsHistory.length || 0;
+  const totalTests = userData?.testsHistory?.length || 0;
   const averageScore =
     totalTests > 0
       ? (
@@ -181,289 +134,202 @@ const DashboardHome = ({ userData }) => {
       ? (
           userData?.testsHistory.reduce(
             (acc, test) => acc + test.successRate,
-            0,
+            0
           ) / totalTests
-        ).toFixed(2)
+        ).toFixed(1)
       : 0;
+
   const totalQuestions =
-    userData?.testsHistory.reduce(
+    userData?.testsHistory?.reduce(
       (acc, test) => acc + test.answers.length,
-      0,
+      0
     ) || 0;
   const correctAnswers =
-    userData?.testsHistory.reduce(
+    userData?.testsHistory?.reduce(
       (acc, test) => acc + test.answers.filter((a) => a.correct).length,
-      0,
+      0
     ) || 0;
 
-
   return (
-    <>
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
       {userData ? (
-        <div className="min-h-screen  p-4 md:p-8">
-          <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
-              <div className="flex flex-col md:flex-row items-center gap-6">
+        <>
+          {/* Header Card */}
+          <div className="bg-white rounded-2xl p-8 border border-slate-200/60 shadow-sm flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-32 -mt-32 -z-0 opacity-50" />
+
+            <div className="relative z-10">
+              <div className="relative">
                 <img
                   src={userData.avatar}
                   alt="Avatar"
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-qizil1 shadow-lg"
+                  className="w-32 h-32 rounded-2xl object-cover ring-4 ring-slate-50 shadow-md"
                 />
-                <div className="flex-1 text-center md:text-left">
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                    {userData.lastName} {userData.firstName}
-                  </h1>
-                  <p className="text-gray-600 mb-3">{userData.email}</p>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    <span
-                      className={`px-4 py-1.5 rounded-full text-sm font-semibold ${getRoleBadge(userData.role)}`}
-                    >
-                      {userData.role.toUpperCase()}
-                    </span>
-                    <span
-                      className={`px-4 py-1.5 rounded-full text-sm font-semibold ${getGradeBadge(userData.grade)}`}
-                    >
-                      {formatGrade(userData.grade)}
-                    </span>
-                    <span className="px-4 py-1.5 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">
-                      {userData.gradeExperience} Year
-                      {userData.gradeExperience !== 1 ? "s" : ""} Experience
-                    </span>
-                  </div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 border-4 border-white rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                 </div>
               </div>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <div className="bg-qizil1 from-qizil1 to-qizil2 rounded-lg shadow-lg p-6 text-white">
-                <div className="flex items-center relative justify-between">
-                  <div>
-                    <p className="text-blue-100 text-sm font-medium">
-                      Total Tests
-                    </p>
-                    <p className="text-4xl font-bold mt-2">{totalTests}</p>
-                  </div>
-                  <div className="bg-red-400 bg-opacity-30 rounded-full p-4 -right-4">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+            <div className="flex-1 text-center md:text-left relative z-10">
+              <h1 className="text-3xl font-black text-slate-900 mb-2">
+                {userData.firstName} {userData.lastName}
+              </h1>
+              <p className="text-slate-500 font-medium mb-5 flex items-center justify-center md:justify-start gap-2">
+                {userData.email}
+              </p>
 
-              <div className="bg-white rounded-lg shadow-lg p-6 text-qizil2 border-2 border-qizil1">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-qizil2 text-sm font-medium">
-                      Average Score
-                    </p>
-                    <p className="text-4xl font-bold mt-2">{averageScore}</p>
-                  </div>
-                  <div className="bg-red-100 bg-opacity-30 rounded-full p-4 -right-4">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-qizil1 rounded-lg shadow-lg p-6 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-purple-100 text-sm font-medium">
-                      Success Rate
-                    </p>
-                    <p className="text-4xl font-bold mt-2">
-                      {averageSuccessRate}%
-                    </p>
-                  </div>
-                  <div className="bg-red-400 bg-opacity-30 rounded-full p-4 right-3.5">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-qizil2 text-red-500">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-red-500 text-sm font-medium">
-                      Correct Answers
-                    </p>
-                    <p className="text-4xl font-bold mt-2">
-                      {correctAnswers}/{totalQuestions}
-                    </p>
-                  </div>
-                  <div className="bg-red-100 bg-opacity-30 rounded-full p-4">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                <span
+                  className={`px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider border ${getGradeBadge(userData.grade)}`}
+                >
+                  {userData.grade}
+                </span>
+                <span className="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                  {userData.gradeExperience} Years Experience
+                </span>
+                <span className="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-qizil1/5 text-qizil1 border border-qizil1/10">
+                  {userData.role.toUpperCase()}
+                </span>
               </div>
             </div>
+          </div>
 
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-blue-50 rounded-xl">
+                  <FileText className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+                Total Tests
+              </p>
+              <h3 className="text-3xl font-black text-slate-900 mt-1">
+                {totalTests}
+              </h3>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-qizil1/5 rounded-xl">
+                  <Award className="w-6 h-6 text-qizil1" />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+                Avg Score
+              </p>
+              <h3 className="text-3xl font-black text-slate-900 mt-1">
+                {averageScore}
+              </h3>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-emerald-50 rounded-xl">
+                  <TrendingUp className="w-6 h-6 text-emerald-600" />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+                Success Rate
+              </p>
+              <h3 className="text-3xl font-black text-slate-900 mt-1">
+                {averageSuccessRate}%
+              </h3>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 bg-purple-50 rounded-xl">
+                  <CheckCircle className="w-6 h-6 text-purple-600" />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+                Answers
+              </p>
+              <h3 className="text-3xl font-black text-slate-900 mt-1">
+                {correctAnswers}/{totalQuestions}
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Chart Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Performance Over Time
-              </h2>
+            <div className="lg:col-span-2 bg-white p-8 rounded-2xl border border-slate-200/60 shadow-sm">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-qizil1" />
+                  Performance Over Time
+                </h2>
+              </div>
               <div className="h-80">
                 <canvas id="testsChart"></canvas>
               </div>
             </div>
 
-            {/* Test History */}
-            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            {/* Recent Activity / Test History Sidebar */}
+            <div className="bg-white p-8 rounded-2xl border border-slate-200/60 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-qizil1" />
                 Test History
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-6 overflow-y-auto max-h-[400px] pr-2 scrollbar-thin">
                 {userData.testsHistory &&
-                  userData.testsHistory.map((test, index) => {
-                    const correctCount = test.answers.filter(
-                      (a) => a.correct,
-                    ).length;
-                    const totalCount = test.answers.length;
-                    const date = new Date(test.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      },
-                    );
-
-                    return (
-                      <div
-                        key={test._id}
-                        className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                              {test.test.testTitle}
-                            </h3>
-                            <p className="text-sm text-gray-500 mb-3">{date}</p>
-                            <div className="flex flex-wrap gap-3">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-qizil1">
-                                Score: {test.score}
-                              </span>
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                Success: {test.successRate.toFixed(2)}%
-                              </span>
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border-1 border-qizil1 bg-white text-qizil2">
-                                Correct: {correctCount}/{totalCount}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="w-full md:w-48">
-                            <div className="relative pt-1">
-                              <div className="flex mb-2 items-center justify-between">
-                                <div className="text-xs font-semibold text-gray-600">
-                                  Progress
-                                </div>
-                                <div className="text-xs font-semibold text-gray-600">
-                                  {((correctCount / totalCount) * 100).toFixed(
-                                    0,
-                                  )}
-                                  %
-                                </div>
-                              </div>
-                              <div className="overflow-hidden h-2 text-xs flex rounded-full bg-gray-200">
-                                <div
-                                  style={{
-                                    width: `${(correctCount / totalCount) * 100}%`,
-                                  }}
-                                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-qizil1 to-red-300"
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                  userData.testsHistory.map((test) => (
+                    <div
+                      key={test._id}
+                      className="group relative pl-6 border-l-2 border-slate-100 hover:border-qizil1 transition-colors pb-2"
+                    >
+                      <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white border-2 border-slate-200 group-hover:border-qizil1 transition-colors" />
+                      <h4 className="text-sm font-bold text-slate-800 line-clamp-1">
+                        {test.test.testTitle}
+                      </h4>
+                      <p className="text-[11px] text-slate-400 mt-1 font-medium">
+                        {new Date(test.createdAt).toLocaleDateString()}
+                      </p>
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="text-xs font-bold text-qizil1 bg-qizil1/5 px-2 py-0.5 rounded-lg border border-qizil1/10">
+                          {test.score} pts
+                        </span>
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100">
+                          {test.successRate.toFixed(0)}%
+                        </span>
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
+                {(!userData.testsHistory ||
+                  userData.testsHistory.length === 0) && (
+                  <div className="text-center py-10">
+                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <FileText className="w-6 h-6 text-slate-300" />
+                    </div>
+                    <p className="text-sm text-slate-400">No tests taken yet</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div className="w-full h-auto  flex justify-center ">
-          <div className="flex flex-col mx-auto max-w-full min-h-screen">
-            <div className="flex w-fit flex-col gap-4">
-              <div className="flex items-center gap-4">
-                <div className="skeleton h-32 w-32 shrink-0 rounded-full"></div>
-                <div className="flex flex-col gap-4">
-                  <div className="skeleton h-4 w-34"></div>
-                  <div className="skeleton h-4 w-20"></div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="skeleton h-8 w-[100px] rounded-full"></div>
-                    <div className="skeleton h-8 w-[170px] rounded-full"></div>
-                    <div className="skeleton h-8 w-[200px] rounded-full"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 pt-[30px]">
-              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
-              <div className="skeleton h-[115px] w-[300px] rounded-lg"></div>
-            </div>
-
-            <div className="skeleton w-full mt-5 h-[400px] rounded-lg"></div>
+        /* Enhanced Skeleton */
+        <div className="space-y-8 animate-pulse">
+          <div className="h-48 bg-white rounded-2xl border border-slate-200/60" />
+          <div className="grid grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="h-32 bg-white rounded-2xl border border-slate-200/60"
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-3 gap-8">
+            <div className="col-span-2 h-96 bg-white rounded-2xl border border-slate-200/60" />
+            <div className="h-96 bg-white rounded-2xl border border-slate-200/60" />
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
