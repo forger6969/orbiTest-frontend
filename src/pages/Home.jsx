@@ -1,558 +1,239 @@
 import React from "react";
-import Header from "../Components/Header";
 import { Link } from "react-router-dom";
-import DotGrid from "../Components/DotGrid";
 import { useTranslation } from "react-i18next";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  CheckCircle2,
+  FileCheck2,
+  GraduationCap,
+  MessagesSquare,
+  Orbit,
+  Radar,
+} from "lucide-react";
+import Header from "../Components/Header";
 import logo from "../assets/logo.svg";
 
 const Home = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isUzbek = i18n.language.startsWith("uz");
+
+  const copy = isUzbek
+    ? {
+        label: "ORBITEST / O'QUV TIZIMI",
+        hero: ["Faqat testdan", "o'tish emas.", "Yo'lingizni bilish."],
+        intro:
+          "O'quvchi, mentor va natijani bitta aniq trayektoriyaga birlashtiradigan IT ta'lim tizimi.",
+        action: "Oqimni boshlash",
+        scroll: "Tizimni ko'rish",
+        orbitTitle: "O'quv orbitasi",
+        orbit: ["Bilim", "Amaliyot", "Fikr-mulohaza"],
+        principle: "Tartibsiz tayyorgarlik o'sishni yashiradi.",
+        principleText:
+          "OrbiTest har bir qadamni bitta kontekstda ushlab turadi: nimani o'rgandingiz, nimani qo'lladingiz va keyin nimani yaxshilash kerak.",
+        sequence: [
+          ["01", "Bilimni tekshirish", "Testlar boshlang'ich nuqtani ko'rsatadi — taxminlarni emas, aniq manzarani."],
+          ["02", "Ish bilan isbotlash", "Loyiha havolasini yuboring va nazariyani amaliy natijaga aylantiring."],
+          ["03", "O'sishni ko'rish", "Mentor bahosi va guruh konteksti keyingi qadamni aniq belgilaydi."],
+        ],
+        systemLabel: "Bitta o'quv makoni",
+        systemTitle: "Keraksiz interfeyslarsiz, faqat muhim nuqtalar.",
+        system: [
+          ["Testlar", "Savollar, vaqt va natija. Bilimni haqiqiy ish rejimida tekshirish uchun."],
+          ["Amaliy ishlar", "Loyiha havolasi, mezonlar va yuborish holati bir joyda."],
+          ["Mentor bilan aloqa", "Natija tarixida saqlanadigan aniq teskari aloqa."],
+        ],
+        methodLabel: "Ritm emas, tizim",
+        methodTitle: "O'quv jarayoni ortiqcha ma'muriyatsiz.",
+        method: [
+          ["Guruh", "Sizning dasturingiz, vazifalaringiz va mentorlaringiz bitta oqimda."],
+          ["Tajriba", "Har bir topshiriq o'z o'rniga ega: sinov, ish, baholash."],
+          ["Keyingi qadam", "Natija sizga qayerga harakat qilishni aytadi."],
+        ],
+        final: "O'sishni tasodifga qoldirmang.",
+        finalText: "O'qishni faqat topshiriqlar ro'yxati emas, boshqariladigan jarayonga aylantiring.",
+        footer: "IT-ta'lim uchun aniqroq o'quv jarayoni.",
+      }
+    : {
+        label: "ORBITEST / УЧЕБНАЯ СИСТЕМА",
+        hero: ["Не просто", "пройти тест.", "Понять свой путь."],
+        intro:
+          "Система для IT-обучения, которая собирает студента, ментора и результат в одну понятную траекторию.",
+        action: "Начать путь",
+        scroll: "Посмотреть систему",
+        orbitTitle: "Учебная орбита",
+        orbit: ["Знания", "Практика", "Обратная связь"],
+        principle: "Хаотичная подготовка скрывает рост.",
+        principleText:
+          "OrbiTest удерживает каждый шаг в одном контексте: что вы изучили, как применили это в работе и что улучшать дальше.",
+        sequence: [
+          ["01", "Проверить знания", "Тесты показывают отправную точку — не догадки, а ясную картину."],
+          ["02", "Подтвердить работой", "Отправьте ссылку на проект и превратите теорию в практический результат."],
+          ["03", "Увидеть рост", "Оценка ментора и контекст группы точно определяют следующий шаг."],
+        ],
+        systemLabel: "Единое учебное пространство",
+        systemTitle: "Без лишних интерфейсов. Только точки, которые двигают вперёд.",
+        system: [
+          ["Тесты", "Вопросы, время и результат — чтобы проверить знания в реальном рабочем ритме."],
+          ["Практические работы", "Ссылка на проект, критерии и статус сдачи остаются в одном месте."],
+          ["Диалог с ментором", "Конкретная обратная связь, которая сохраняется в истории результата."],
+        ],
+        methodLabel: "Не ритм, а система",
+        methodTitle: "Учебный процесс без лишней административной нагрузки.",
+        method: [
+          ["Группа", "Ваша программа, задания и менторы находятся в одном потоке."],
+          ["Практика", "У каждого задания есть своё место: проверка, работа, оценка."],
+          ["Следующий шаг", "Результат сам подсказывает, куда двигаться дальше."],
+        ],
+        final: "Не оставляйте рост на волю случая.",
+        finalText: "Превратите обучение из списка разрозненных заданий в управляемый процесс.",
+        footer: "Более ясный учебный процесс для IT-образования.",
+      };
+
+  const systemIcons = [Radar, FileCheck2, MessagesSquare];
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        minHeight: "100vh",
-        position: "relative",
-        overflowX: "hidden",
-      }}
-    >
-      {/* Orqa fon */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-        }}
-      >
-        <DotGrid
-          dotSize={1.5}
-          gap={15}
-          baseColor="#d9d7d9"
-          activeColor="#dc2626"
-          proximity={120}
-          shockRadius={100}
-          shockStrength={15}
-          resistance={950}
-          returnDuration={1.5}
-        />
-      </div>
+    <div className="orbit-page">
+      <Header />
+      <main>
+        <section className="orbit-hero" id="top">
+          <div className="orbit-hero__grid" aria-hidden="true" />
+          <div className="orbit-container orbit-hero__layout">
+            <aside className="orbit-hero__rail" aria-label="Раздел 1 из 3">
+              <span>01</span>
+              <i />
+              <span>03</span>
+            </aside>
+            <div className="orbit-hero__copy">
+              <p className="orbit-kicker">{copy.label}</p>
+              <h1>
+                {copy.hero.map((line, index) => <span key={line}>{line}{index === 1 && <em />}</span>)}
+              </h1>
+              <div className="orbit-hero__bottom">
+                <p>{copy.intro}</p>
+                <Link to="/SingUp" className="orbit-action">
+                  {copy.action}<ArrowUpRight size={18} aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+            <figure className="orbit-map" aria-labelledby="orbit-map-title">
+              <figcaption id="orbit-map-title">{copy.orbitTitle}</figcaption>
+              <svg viewBox="0 0 480 480" aria-hidden="true">
+                <circle cx="240" cy="240" r="205" />
+                <circle cx="240" cy="240" r="146" />
+                <circle cx="240" cy="240" r="78" />
+                <path d="M63 122c80 48 158 47 235 0 52-31 96-34 145-11" />
+                <path d="M80 371c83-58 175-56 270 1" />
+                <circle className="orbit-map__point" cx="64" cy="122" r="9" />
+                <circle className="orbit-map__point" cx="383" cy="121" r="9" />
+                <circle className="orbit-map__point" cx="349" cy="371" r="9" />
+              </svg>
+              <span className="orbit-map__label orbit-map__label--one">{copy.orbit[0]}</span>
+              <span className="orbit-map__label orbit-map__label--two">{copy.orbit[1]}</span>
+              <span className="orbit-map__label orbit-map__label--three">{copy.orbit[2]}</span>
+              <div className="orbit-map__core"><Orbit size={31} /><span>ORBI<br />TEST</span></div>
+            </figure>
+          </div>
+          <a className="orbit-hero__scroll" href="#principle">
+            <span>{copy.scroll}</span><ArrowDown size={17} aria-hidden="true" />
+          </a>
+          <div className="orbit-hero__cut" aria-hidden="true" />
+        </section>
 
-      <div
-        style={{
-          position: "relative",
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(5px)",
-          zIndex: 10,
-        }}
-      >
-        <Header />
-      </div>
-
-      <main style={{ position: "relative", zIndex: 1 }} className="pt-20">
-        {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6">
-            {t("home.title")}
-          </h1>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            {t("home.subtitle")}
-          </p>
-          <div className="flex justify-center gap-4">
-            <Link
-              to="/SingUp"
-              className="bg-red-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-red-700 transition-colors"
-            >
-              {t("home.getStarted")}
-            </Link>
-            <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg font-bold text-lg hover:border-gray-400 transition-colors bg-white/50">
-              {t("home.learnMore")}
-            </button>
+        <section className="orbit-principle" id="principle">
+          <div className="orbit-container">
+            <div className="orbit-principle__intro">
+              <p className="orbit-section-index">01 / ПРИНЦИП</p>
+              <h2>{copy.principle}</h2>
+              <p>{copy.principleText}</p>
+            </div>
+            <div className="orbit-sequence">
+              {copy.sequence.map(([number, title, text]) => (
+                <article key={number}>
+                  <span>{number}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                  <i aria-hidden="true" />
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="bg-white border-y border-slate-200 py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <section className="orbit-system" id="features">
+          <div className="orbit-system__arc" aria-hidden="true" />
+          <div className="orbit-container orbit-system__layout">
+            <div className="orbit-system__heading">
+              <p className="orbit-section-index">02 / СИСТЕМА</p>
+              <h2>{copy.systemTitle}</h2>
+            </div>
+            <div className="orbit-system__items">
+              {copy.system.map(([title, text], index) => {
+                const Icon = systemIcons[index];
+                return (
+                  <article key={title}>
+                    <span className="orbit-system__number">0{index + 1}</span>
+                    <Icon size={24} strokeWidth={1.65} />
+                    <div>
+                      <h3>{title}</h3>
+                      <p>{text}</p>
+                    </div>
+                    <ArrowUpRight size={20} aria-hidden="true" />
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="orbit-method" id="about">
+          <div className="orbit-container">
+            <div className="orbit-method__head">
+              <p className="orbit-section-index">03 / ПОДХОД</p>
               <div>
-                <div className="text-4xl font-extrabold text-red-600 mb-2">
-                  50+
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {t("home.stats.centers")}
-                </div>
+                <p className="orbit-kicker orbit-kicker--dark">{copy.methodLabel}</p>
+                <h2>{copy.methodTitle}</h2>
               </div>
-              <div>
-                <div className="text-4xl font-extrabold text-red-600 mb-2">
-                  10k+
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {t("home.stats.students")}
-                </div>
-              </div>
-              <div>
-                <div className="text-4xl font-extrabold text-red-600 mb-2">
-                  1M+
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {t("home.stats.tests")}
-                </div>
-              </div>
-              <div>
-                <div className="text-4xl font-extrabold text-red-600 mb-2">
-                  99%
-                </div>
-                <div className="text-gray-600 font-medium">
-                  {t("home.stats.satisfaction")}
-                </div>
-              </div>
+            </div>
+            <div className="orbit-method__rows">
+              {copy.method.map(([title, text], index) => (
+                <article key={title}>
+                  <span>0{index + 1}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                  <CheckCircle2 size={22} aria-hidden="true" />
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 bg-white/60 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-              {t("home.features.title")}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-4">
-                  {t("home.features.realTime")}
-                </h3>
-                <p className="text-gray-600">
-                  {t("home.features.realTimeDesc")}
-                </p>
-              </div>
-              <div className="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-4">
-                  {t("home.features.analytics")}
-                </h3>
-                <p className="text-gray-600">
-                  {t("home.features.analyticsDesc")}
-                </p>
-              </div>
-              <div className="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-4">
-                  {t("home.features.vastBank")}
-                </h3>
-                <p className="text-gray-600">
-                  {t("home.features.vastBankDesc")}
-                </p>
-              </div>
+        <section className="orbit-closing">
+          <div className="orbit-container">
+            <div className="orbit-closing__surface">
+              <div className="orbit-closing__ring" aria-hidden="true" />
+              <p className="orbit-kicker">ORBITEST / START</p>
+              <h2>{copy.final}</h2>
+              <p>{copy.finalText}</p>
+              <Link to="/SingUp" className="orbit-action orbit-action--light">
+                {t("home.getStarted")}<ArrowUpRight size={18} aria-hidden="true" />
+              </Link>
             </div>
-          </div>
-        </section>
-
-        {/* How It Works Section */}
-        <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-16">
-              {t("home.howItWorks.title")}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="relative group">
-                <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  1
-                </div>
-                <h3 className="text-xl font-bold mb-3">
-                  {t("home.howItWorks.step1")}
-                </h3>
-                <p className="text-gray-500">
-                  {t("home.howItWorks.step1Desc")}
-                </p>
-                <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gray-200 -z-10 translate-x-1/2"></div>
-              </div>
-              <div className="relative group">
-                <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  2
-                </div>
-                <h3 className="text-xl font-bold mb-3">
-                  {t("home.howItWorks.step2")}
-                </h3>
-                <p className="text-gray-500">
-                  {t("home.howItWorks.step2Desc")}
-                </p>
-                <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gray-200 -z-10 translate-x-1/2"></div>
-              </div>
-              <div className="relative group">
-                <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  3
-                </div>
-                <h3 className="text-xl font-bold mb-3">
-                  {t("home.howItWorks.step3")}
-                </h3>
-                <p className="text-gray-500">
-                  {t("home.howItWorks.step3Desc")}
-                </p>
-                <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gray-200 -z-10 translate-x-1/2"></div>
-              </div>
-              <div className="relative group">
-                <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  4
-                </div>
-                <h3 className="text-xl font-bold mb-3">
-                  {t("home.howItWorks.step4")}
-                </h3>
-                <p className="text-gray-500">
-                  {t("home.howItWorks.step4Desc")}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CRM Section */}
-        <section className="py-24 bg-slate-900 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                {t("home.crm.title")}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {t("home.crm.subtitle")}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 shrink-0 bg-red-600 rounded-xl flex items-center justify-center font-bold text-xl">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">
-                      {t("home.crm.feature1")}
-                    </h3>
-                    <p className="text-slate-400">
-                      {t("home.crm.feature1Desc")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 shrink-0 bg-red-600 rounded-xl flex items-center justify-center font-bold text-xl">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">
-                      {t("home.crm.feature2")}
-                    </h3>
-                    <p className="text-slate-400">
-                      {t("home.crm.feature2Desc")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 shrink-0 bg-red-600 rounded-xl flex items-center justify-center font-bold text-xl">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">
-                      {t("home.crm.feature3")}
-                    </h3>
-                    <p className="text-slate-400">
-                      {t("home.crm.feature3Desc")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="aspect-video bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex items-center justify-center">
-                  <span className="text-slate-500 italic">
-                    CRM Dashboard Preview
-                  </span>
-                  {/* Можно добавить скриншот или иллюстрацию здесь */}
-                </div>
-                <div className="absolute -bottom-6 -left-6 bg-red-600 p-6 rounded-2xl shadow-xl hidden lg:block">
-                  <p className="text-3xl font-bold">100%</p>
-                  <p className="text-sm opacity-80">Automation</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Feedback Section */}
-        <section className="py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">
-              {t("home.feedback.title")}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-8 bg-white/80 backdrop-blur-sm rounded-3xl border border-gray-100 shadow-sm relative">
-                <div className="text-red-600 mb-6 text-4xl">""</div>
-                <p className="text-lg text-gray-700 mb-8 italic">
-                  {t("home.feedback.user1.text")}
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-200 rounded-full"></div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">
-                      {t("home.feedback.user1.name")}
-                    </h4>
-                    <p className="text-sm text-gray-500">
-                      {t("home.feedback.user1.role")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-8 bg-white/80 backdrop-blur-sm rounded-3xl border border-gray-100 shadow-sm relative">
-                <div className="text-red-600 mb-6 text-4xl">""</div>
-                <p className="text-lg text-gray-700 mb-8 italic">
-                  {t("home.feedback.user2.text")}
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-200 rounded-full"></div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">
-                      {t("home.feedback.user2.name")}
-                    </h4>
-                    <p className="text-sm text-gray-500">
-                      {t("home.feedback.user2.role")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-24 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              {t("home.faq.title")}
-            </h2>
-            <div className="space-y-6">
-              <div className="collapse collapse-plus bg-base-200 rounded-xl">
-                <input type="radio" name="my-accordion-3" defaultChecked />
-                <div className="collapse-title text-xl font-medium">
-                  {t("home.faq.q1")}
-                </div>
-                <div className="collapse-content">
-                  <p>{t("home.faq.a1")}</p>
-                </div>
-              </div>
-              <div className="collapse collapse-plus bg-base-200 rounded-xl">
-                <input type="radio" name="my-accordion-3" />
-                <div className="collapse-title text-xl font-medium">
-                  {t("home.faq.q2")}
-                </div>
-                <div className="collapse-content">
-                  <p>{t("home.faq.a2")}</p>
-                </div>
-              </div>
-              <div className="collapse collapse-plus bg-base-200 rounded-xl">
-                <input type="radio" name="my-accordion-3" />
-                <div className="collapse-title text-xl font-medium">
-                  {t("home.faq.q3")}
-                </div>
-                <div className="collapse-content">
-                  <p>{t("home.faq.a3")}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Final CTA */}
-        <section className="py-20 mb-20">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-red-600 to-red-700 rounded-[3rem] p-12 text-center text-white shadow-2xl shadow-red-200">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {t("home.title")}
-            </h2>
-            <p className="text-xl mb-10 opacity-90">{t("home.subtitle")}</p>
-            <Link
-              to="/SingUp"
-              className="inline-block bg-white text-red-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-colors shadow-lg"
-            >
-              {t("home.getStarted")}
-            </Link>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 bg-[#0a0c10] text-slate-400 py-16 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-1">
-              <div className="text-white text-3xl font-bold mb-6 flex items-center gap-2">
-                <img src={logo} alt="" />
-              </div>
-              <p className="text-sm leading-relaxed mb-6">
-                © {new Date().getFullYear()} OrbiTest. {t("home.footer.rights")}
-              </p>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-slate-800/50 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all duration-300"
-                >
-                  <span className="text-xs font-bold">TG</span>
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-slate-800/50 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all duration-300"
-                >
-                  <span className="text-xs font-bold">IG</span>
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-slate-800/50 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all duration-300"
-                >
-                  <span className="text-xs font-bold">FB</span>
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-white font-bold text-lg mb-6">
-                {t("home.footer.product")}
-              </h4>
-              <ul className="space-y-4 text-sm">
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    {t("header.features")}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    {t("header.pricing")}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    Practice Tests
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    API Docs
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-bold text-lg mb-6">
-                {t("home.footer.company")}
-              </h4>
-              <ul className="space-y-4 text-sm">
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    {t("header.about")}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-red-500 transition-colors">
-                    Privacy Policy
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-bold text-lg mb-6">
-                {t("home.footer.contact")}
-              </h4>
-              <ul className="space-y-4 text-sm">
-                <li className="flex items-center gap-3">
-                  <span className="text-red-600">@</span>
-                  <a
-                    href="mailto:support@orbitest.uz"
-                    className="hover:text-white transition-colors"
-                  >
-                    saidazim186@orbitest.uz
-                  </a>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-red-600">#</span>
-                  <a
-                    href="tel:+998901234567"
-                    className="hover:text-white transition-colors"
-                  >
-                    +998 93 315 03 42
-                  </a>
-                </li>
-                <li className="text-xs text-slate-500 mt-4 leading-relaxed">
-                  Toshkent sh., Yunusobod tumani, <br /> Аmir Temur ko'chasi,
-                  108
-                </li>
-              </ul>
-            </div>
+      <footer className="orbit-footer">
+        <div className="orbit-container orbit-footer__layout">
+          <div><img src={logo} alt="OrbiTest" /><p>{copy.footer}</p></div>
+          <div className="orbit-footer__links">
+            <a href="#principle">{copy.sequence[0][1]}</a>
+            <a href="#features">{copy.systemLabel}</a>
+            <Link to="/Register">{t("header.signIn")}</Link>
           </div>
-
-          <div className="border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-xs tracking-widest uppercase text-slate-500">
-              Made with <span className="text-red-600 mx-1">❤️</span> in
-              Uzbekistan
-            </div>
-            <div className="flex gap-8 text-xs text-slate-500">
-              <span className="hover:text-slate-300 cursor-pointer transition-colors">
-                Terms of Service
-              </span>
-              <span className="hover:text-slate-300 cursor-pointer transition-colors">
-                Cookie Policy
-              </span>
-            </div>
-          </div>
+          <p>© {new Date().getFullYear()} OrbiTest</p>
         </div>
       </footer>
     </div>
