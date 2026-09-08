@@ -96,13 +96,13 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="student-workspace min-h-screen bg-slate-50">
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
-          <nav className="navbar w-full bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/60 px-6 h-16">
+          <nav className="student-topbar navbar w-full bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200/60 px-6 h-16">
             <div className="flex-1">
               <label
                 htmlFor="my-drawer-4"
@@ -247,7 +247,7 @@ const Dashboard = () => {
             </div>
           </nav>
 
-          <main className="p-6 lg:p-10">
+          <main className="student-content p-6 lg:p-10">
             <Routes>
               <Route index element={<DashboardHome userData={userData} />} />
               <Route path="tests" element={<DashboardTests />} />
@@ -261,7 +261,7 @@ const Dashboard = () => {
 
         <div className="drawer-side z-40">
           <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
-          <div className="w-72 min-h-full bg-white border-r border-slate-200/60 flex flex-col shadow-xl shadow-slate-900/5">
+          <div className="student-rail w-72 min-h-full bg-white border-r border-slate-200/60 flex flex-col shadow-xl shadow-slate-900/5">
             <div className="p-8 flex items-center justify-center border-b border-slate-100">
               <img src={logo} alt="orbiTest" className="w-40" />
             </div>

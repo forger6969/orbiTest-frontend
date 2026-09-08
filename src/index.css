@@ -7,6 +7,81 @@
   --animate-spin-slow: spin 8s linear infinite;
 }
 
+/* Student workspace — a quiet editorial control room, distinct from the public site. */
+.student-workspace {
+  --workspace-ink: #132237;
+  --workspace-paper: #f4f0e8;
+  --workspace-line: rgba(19, 34, 55, .13);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 90% 9%, rgba(169, 75, 67, .09), transparent 23rem),
+    linear-gradient(104deg, #ece8df 0%, #f7f4ee 44%, #eee9e0 100%) !important;
+  color: var(--workspace-ink);
+}
+
+.student-workspace .student-rail {
+  width: 18.5rem !important;
+  background: var(--workspace-ink) !important;
+  border: 0 !important;
+  box-shadow: 12px 0 50px rgba(16, 29, 47, .16) !important;
+  color: #edf0ea;
+}
+
+.student-workspace .student-rail > div:first-child {
+  min-height: 102px;
+  padding: 31px 30px 25px !important;
+  border-color: rgba(255,255,255,.14) !important;
+  justify-content: flex-start !important;
+}
+
+.student-workspace .student-rail img { filter: brightness(0) invert(1); width: 8.25rem !important; }
+.student-workspace .student-rail nav { padding: 28px 18px !important; }
+.student-workspace .student-rail nav > div { color: #8391a3 !important; font-size: .62rem !important; letter-spacing: .18em !important; }
+.student-workspace .student-rail a {
+  position: relative;
+  border-radius: 0 !important;
+  color: #cbd3dc !important;
+  margin: 2px 0;
+  padding: .88rem 1rem !important;
+}
+.student-workspace .student-rail a:hover { color: #fff !important; background: rgba(255,255,255,.07) !important; }
+.student-workspace .student-rail a[aria-current="page"] { background: rgba(255,255,255,.11) !important; color: #fff !important; }
+.student-workspace .student-rail a[aria-current="page"]::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: #d56459; }
+.student-workspace .student-rail > div:last-child { border-color: rgba(255,255,255,.14) !important; padding: 18px !important; }
+.student-workspace .student-rail > div:last-child button { color: #d7dde3 !important; border-radius: 0 !important; }
+.student-workspace .student-rail > div:last-child p { color: inherit !important; }
+
+.student-workspace .student-topbar {
+  height: 78px !important;
+  background: rgba(247,244,238,.86) !important;
+  border-color: var(--workspace-line) !important;
+  backdrop-filter: blur(18px);
+}
+.student-workspace .student-topbar::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 28%; height: 3px; background: #a94b43; }
+.student-workspace .student-content { position: relative; padding: 52px clamp(26px, 5vw, 76px) 72px !important; }
+.student-workspace .student-content::before { content: ""; position: absolute; width: 28rem; height: 28rem; border: 1px solid rgba(19,34,55,.1); border-radius: 50%; right: -10rem; top: 5rem; pointer-events: none; }
+.student-workspace .student-content > div { position: relative; z-index: 1; }
+.student-workspace .student-content h1 { letter-spacing: -.055em !important; color: #132237 !important; }
+.student-workspace .student-content h2 { letter-spacing: -.035em !important; }
+.student-workspace .student-content .bg-white {
+  background: rgba(255,253,248,.9) !important;
+  border-color: var(--workspace-line) !important;
+  border-radius: 2px 24px 2px 24px !important;
+  box-shadow: 0 16px 34px rgba(28, 43, 61, .055) !important;
+}
+.student-workspace .student-content .rounded-2xl { border-radius: 2px 24px 2px 24px !important; }
+.student-workspace .student-content .rounded-xl { border-radius: 2px 16px 2px 16px !important; }
+.student-workspace .student-content .bg-slate-50 { background: #ece8df !important; }
+.student-workspace .student-content .text-qizil1 { color: #a94b43 !important; }
+.student-workspace .student-content .bg-qizil1 { background: #a94b43 !important; }
+.student-workspace .student-content input,
+.student-workspace .student-content select,
+.student-workspace .student-content textarea { border-radius: 0 14px 0 14px !important; border-color: var(--workspace-line) !important; background: #fffdf8 !important; }
+
+@media (max-width: 1023px) {
+  .student-workspace .student-content { padding: 35px 20px 56px !important; }
+}
+
 @layer base {
   html { scroll-behavior: smooth; }
   body { @apply bg-slate-50 text-slate-900; }
